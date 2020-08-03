@@ -1,0 +1,19 @@
+
+# Http Listen Port
+[http]
+host = ""
+port = 8080
+
+# Database Storage
+[storage]
+driver = "mysql"
+user = "root"
+password = "stephen"
+host = "localhost"
+port = 3306
+dbname = "ginweb"
+charset = "utf8mb4"
+prefix = "gin_"
+max_idle = 2
+max_conn = 10
+max_lifetime = 5
