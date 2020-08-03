@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package database
+package datastore
 
 import (
 	"fmt"
@@ -37,6 +37,8 @@ func NewDB(storage config.Storage) error {
 		return err
 	}
 
+	db := DB{}
+	db.Set(conn)
 	conn.DB().SetMaxIdleConns(storage.MaxIdle)
 	conn.DB().SetMaxOpenConns(storage.MaxConn)
 	conn.DB().SetConnMaxLifetime(time.Duration(storage.MaxLifeTime) * time.Minute)

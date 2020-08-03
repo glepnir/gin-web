@@ -10,20 +10,17 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"sync"
 	"syscall"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/glepnir/gin-web/internal/config"
-	"github.com/glepnir/gin-web/internal/database"
+	"github.com/glepnir/gin-web/internal/datastore"
 	"github.com/glepnir/gin-web/internal/routes"
 )
 
-var once = new(sync.Once)
-
 type Application struct {
-	Config *config.Config
+	Config config.Config
 	Route  *gin.Engine
 }
 
@@ -33,6 +30,7 @@ func NewApplication(route *gin.Engine) *Application {
 
 func (a *Application) Appinitial() {
 	a.Config.MustLoadConf()
+	a.Route.Use(gin.Recovery())
 	configureDataBase(a.Config.Storage)
 	configureRouter(a.Route)
 }
@@ -65,7 +63,7 @@ func (a *Application) Run() {
 }
 
 func configureDataBase(storage config.Storage) {
-	err := database.NewDB(storage)
+	err := datastore.NewDB(storage)
 	if err != nil {
 		panic(err)
 	}

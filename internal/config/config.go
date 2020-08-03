@@ -7,9 +7,9 @@ package config
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 	"sync"
 
+	"github.com/glepnir/gin-web/pkg/finder"
 	"github.com/spf13/viper"
 )
 
@@ -42,12 +42,16 @@ type Storage struct {
 
 func (c *Config) MustLoadConf() {
 	once.Do(func() {
-		ConfPath := inferRootDir() + string(os.PathSeparator) + "configs"
+		root, err := finder.InferRootDir("configs")
+		if err != nil {
+			panic(err)
+		}
+		ConfPath := root + string(os.PathSeparator) + "configs"
 
 		viper.SetConfigName("config")
 		viper.AddConfigPath(ConfPath)
 
-		err := viper.ReadInConfig()
+		err = viper.ReadInConfig()
 		if err != nil {
 			panic(fmt.Errorf("Fatal error config file: %s \n", err))
 		}
@@ -73,24 +77,4 @@ func (c *Config) MustLoadConf() {
 		MaxLifeTime: viper.GetInt("storage.max_lifetime"),
 	}
 
-}
-
-func inferRootDir() string {
-	cwd, err := os.Getwd()
-	if err != nil {
-		panic(err)
-	}
-
-	var infer func(d string) string
-	infer = func(d string) string {
-		if d == "/" {
-			panic("Please run in the root of project" + cwd)
-		}
-		_, err := os.Stat(d + string(os.PathSeparator) + "configs")
-		if err == nil || os.IsExist(err) {
-			return d
-		}
-		return infer(filepath.Dir(d))
-	}
-	return infer(cwd)
 }

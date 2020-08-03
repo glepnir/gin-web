@@ -12,10 +12,9 @@ import (
 )
 
 type Base struct {
-	ID        uuid.UUID  `gorm:"type:uuid;primary_key" json:"id"`
-	CreateAt  time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"create_at"`
-	UpdateAt  time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"update_at"`
-	DeletedAt *time.Time `sql:"index" json:"deleted_at,omitempty"`
+	ID       uuid.UUID `gorm:"type:uuid;primary_key" json:"id"`
+	CreateAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"create_at"`
+	UpdateAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"update_at"`
 }
 
 // BeforeCreate is hooks to create uuid
