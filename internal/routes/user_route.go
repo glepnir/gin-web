@@ -7,15 +7,15 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/glepnir/gin-web/internal/datastore"
-	"github.com/glepnir/gin-web/internal/repositories"
-	"github.com/glepnir/gin-web/internal/services"
+	"github.com/glepnir/gin-web/internal/repositories/userepo"
+	"github.com/glepnir/gin-web/internal/services/userservice"
 )
 
 func UserRoute(g *gin.RouterGroup) {
 	userg := g.Group("/user")
 	conn := &datastore.DB{}
-	userRepository := repositories.NewUserRepository(conn.Get())
-	userService := services.NewUserService(userRepository)
+	userRepository := userepo.NewUserRepository(conn.Get())
+	userService := userservice.NewUserService(userRepository)
 	{
 		userg.POST("/create", userControler)
 	}
