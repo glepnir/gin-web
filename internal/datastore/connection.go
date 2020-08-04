@@ -40,6 +40,8 @@ func NewDB(storage config.Storage) error {
 	conn.DB().SetMaxIdleConns(storage.MaxIdle)
 	conn.DB().SetMaxOpenConns(storage.MaxConn)
 	conn.DB().SetConnMaxLifetime(time.Duration(storage.MaxLifeTime) * time.Minute)
+	db := &DB{}
+	db.Set(conn)
 	return nil
 }
 
