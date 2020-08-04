@@ -5,6 +5,7 @@
 package userepo
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/glepnir/gin-web/internal/datastore/entity"
 	"github.com/glepnir/gin-web/internal/repositories"
 	"github.com/jinzhu/gorm"
@@ -14,8 +15,12 @@ type userRepo struct {
 	conn *gorm.DB
 }
 
-func NewUserRepository(gdb *gorm.DB) repositories.UserRepository {
-	return &userRepo{conn: gdb}
+func NewUserRepository(c *gin.Context) repositories.UserRepository {
+	if conn, ok := c.Value("db").(*gorm.DB); ok {
+		return &userRepo{conn}
+	} else {
+		return &userRepo{}
+	}
 }
 
 var _ repositories.UserRepository = (*userRepo)(nil)

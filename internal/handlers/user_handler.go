@@ -5,6 +5,8 @@
 package handlers
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/glepnir/gin-web/internal/datastore/entity"
@@ -22,4 +24,8 @@ func NewUserHandler(u services.UserServices) *UserHandler {
 func (u *UserHandler) Create(c *gin.Context) {
 	var user entity.User
 	_ = c.ShouldBindBodyWith(&user, binding.JSON)
+	_, err := u.userService.CreateUser(user)
+	if err != nil {
+		fmt.Fprintf(c.Writer, "success")
+	}
 }
