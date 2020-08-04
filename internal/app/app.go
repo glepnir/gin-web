@@ -15,7 +15,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/glepnir/gin-web/internal/config"
-	"github.com/glepnir/gin-web/internal/middlewares"
+	"github.com/glepnir/gin-web/internal/datastore"
 	"github.com/glepnir/gin-web/internal/routes"
 )
 
@@ -30,8 +30,9 @@ func NewApplication(route *gin.Engine) *Application {
 
 func (a *Application) Appinitial() {
 	a.Config.MustLoadConf()
-	a.Route.Use(gin.Recovery(), middlewares.SetDBConnection(a.Config.Storage))
-	configureRouter(a.Route, &gin.Context{})
+	a.Route.Use(gin.Recovery())
+	configureDataBase(a.Config.Storage)
+	configureRouter(a.Route)
 }
 
 func (a *Application) Run() {
@@ -61,8 +62,15 @@ func (a *Application) Run() {
 	log.Fatal("erver exit")
 }
 
-func configureRouter(r *gin.Engine, c *gin.Context) {
+func configureDataBase(storage config.Storage) {
+	err := datastore.NewDB(storage)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func configureRouter(r *gin.Engine) {
 	g := r.Group("/api/v1")
 	routes.HealthRouter(g)
-	routes.UserRoute(g, c)
+	routes.UserRoute(g)
 }

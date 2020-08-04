@@ -6,14 +6,16 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/glepnir/gin-web/internal/datastore"
 	"github.com/glepnir/gin-web/internal/handlers"
 	"github.com/glepnir/gin-web/internal/repositories/userepo"
 	"github.com/glepnir/gin-web/internal/services/userservice"
 )
 
-func UserRoute(g *gin.RouterGroup, c *gin.Context) {
+func UserRoute(g *gin.RouterGroup) {
 	userg := g.Group("/user")
-	userRepository := userepo.NewUserRepository(c)
+	conn := &datastore.DB{}
+	userRepository := userepo.NewUserRepository(conn.Get())
 	userService := userservice.NewUserService(userRepository)
 	userHandler := handlers.NewUserHandler(userService)
 	{

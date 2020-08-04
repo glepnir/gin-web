@@ -13,11 +13,11 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type DB struct {
-	conn *gorm.DB
-}
+var conn *gorm.DB
 
-func NewDB(storage config.Storage) (*gorm.DB, error) {
+type DB struct{}
+
+func NewDB(storage config.Storage) error {
 	driver := storage.Driver
 
 	dbURI := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=True&loc=Local",
@@ -30,16 +30,23 @@ func NewDB(storage config.Storage) (*gorm.DB, error) {
 
 	conn, err := gorm.Open(driver, dbURI)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	if err := conn.DB().Ping(); err != nil {
-		return nil, err
+		return err
 	}
 
-	db := DB{conn}
 	conn.DB().SetMaxIdleConns(storage.MaxIdle)
 	conn.DB().SetMaxOpenConns(storage.MaxConn)
 	conn.DB().SetConnMaxLifetime(time.Duration(storage.MaxLifeTime) * time.Minute)
-	return db.conn, nil
+	return nil
+}
+
+func (d *DB) Get() *gorm.DB {
+	return conn
+}
+
+func (d *DB) Set(db *gorm.DB) {
+	conn = db
 }
