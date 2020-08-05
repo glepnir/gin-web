@@ -6,6 +6,7 @@ package handlers
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -24,7 +25,7 @@ func NewUserHandler(u services.UserServices) *UserHandler {
 func (u *UserHandler) Create(c *gin.Context) {
 	var user entity.User
 	_ = c.ShouldBindBodyWith(&user, binding.JSON)
-	fmt.Println(user)
+	user.Base.CreateAt = time.Now()
 	err := u.userService.CreateUser(user)
 	if err != nil {
 		fmt.Fprintf(c.Writer, "success")
