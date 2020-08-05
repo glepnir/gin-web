@@ -5,9 +5,9 @@
 package userservice
 
 import (
-	"github.com/glepnir/gin-web/internal/datastore/entity"
 	"github.com/glepnir/gin-web/internal/repositories"
 	"github.com/glepnir/gin-web/internal/services"
+	"github.com/glepnir/gin-web/internal/storage/entity"
 )
 
 type userServ struct {
@@ -20,6 +20,10 @@ func NewUserService(u repositories.UserRepository) services.UserServices {
 
 var _UserServ = (*services.UserServices)(nil)
 
-func (u *userServ) CreateUser(user entity.User) (bool, error) {
-	return u.CreateUser(user)
+func (u *userServ) CreateUser(user entity.User) error {
+	_, err := u.userRepository.CreateUser(user)
+	if err != nil {
+		return err
+	}
+	return nil
 }

@@ -18,8 +18,8 @@ var (
 )
 
 type Config struct {
-	HTTP    HTTP
-	Storage Storage
+	HTTP     HTTP
+	DataBase DataBase
 }
 
 type HTTP struct {
@@ -27,7 +27,7 @@ type HTTP struct {
 	Port string
 }
 
-type Storage struct {
+type DataBase struct {
 	Driver      string
 	User        string
 	Password    string
@@ -64,7 +64,7 @@ func (c *Config) MustLoadConf() {
 		Port: viper.GetString("http.port"),
 	}
 
-	c.Storage = Storage{
+	c.DataBase = DataBase{
 		Driver:      viper.GetString("storage.driver"),
 		User:        viper.GetString("storage.user"),
 		Password:    viper.GetString("storage.password"),

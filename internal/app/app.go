@@ -15,8 +15,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/glepnir/gin-web/internal/config"
-	"github.com/glepnir/gin-web/internal/datastore"
 	"github.com/glepnir/gin-web/internal/routes"
+	"github.com/glepnir/gin-web/internal/storage"
 )
 
 type Application struct {
@@ -31,7 +31,7 @@ func NewApplication(route *gin.Engine) *Application {
 func (a *Application) Appinitial() {
 	a.Config.MustLoadConf()
 	a.Route.Use(gin.Recovery())
-	configureDataBase(a.Config.Storage)
+	configureDataBase(a.Config.DataBase)
 	configureRouter(a.Route)
 }
 
@@ -62,8 +62,8 @@ func (a *Application) Run() {
 	log.Fatal("erver exit")
 }
 
-func configureDataBase(storage config.Storage) {
-	err := datastore.NewDB(storage)
+func configureDataBase(cdb config.DataBase) {
+	err := storage.NewDB(cdb)
 	if err != nil {
 		panic(err)
 	}

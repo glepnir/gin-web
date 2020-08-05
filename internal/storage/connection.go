@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package datastore
+package storage
 
 import (
 	"fmt"
@@ -17,7 +17,7 @@ var conn *gorm.DB
 
 type DB struct{}
 
-func NewDB(storage config.Storage) error {
+func NewDB(storage config.DataBase) error {
 	driver := storage.Driver
 
 	dbURI := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=True&loc=Local",

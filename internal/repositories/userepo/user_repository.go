@@ -5,8 +5,8 @@
 package userepo
 
 import (
-	"github.com/glepnir/gin-web/internal/datastore/entity"
 	"github.com/glepnir/gin-web/internal/repositories"
+	"github.com/glepnir/gin-web/internal/storage/entity"
 	"github.com/jinzhu/gorm"
 )
 
@@ -26,6 +26,5 @@ func (r *userRepo) CreateUser(user entity.User) (entity.User, error) {
 	if err := r.conn.Create(&user).Scan(&userCreated).Error; err != nil {
 		return userCreated, err
 	}
-
 	return userCreated, nil
 }
