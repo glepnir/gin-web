@@ -5,13 +5,13 @@
 package handlers
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/glepnir/gin-web/internal/services"
 	"github.com/glepnir/gin-web/internal/storage/entity"
+	"github.com/glepnir/gin-web/pkg/ginresp"
 )
 
 type UserHandler struct {
@@ -26,8 +26,15 @@ func (u *UserHandler) Create(c *gin.Context) {
 	var user entity.User
 	_ = c.ShouldBindBodyWith(&user, binding.JSON)
 	user.Base.CreateAt = time.Now()
-	err := u.userService.CreateUser(user)
-	if err != nil {
-		fmt.Fprintf(c.Writer, "success")
+	err, ok := u.userService.CreateUser(user)
+	if ok {
+		ginresp.Ok(c, "Create successful", nil, nil)
+	} else {
+		if err != nil {
+			ginresp.InternalError(c, "Create failed", nil, err)
+		} else {
+			ginresp.Conflict(c, "User Exist Create failed", nil, nil)
+		}
 	}
+
 }

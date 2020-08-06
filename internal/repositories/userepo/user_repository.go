@@ -5,8 +5,6 @@
 package userepo
 
 import (
-	"fmt"
-
 	"github.com/glepnir/gin-web/internal/repositories"
 	"github.com/glepnir/gin-web/internal/storage/entity"
 	"github.com/jinzhu/gorm"
@@ -25,9 +23,20 @@ var _ repositories.UserRepository = (*userRepo)(nil)
 // Register is method to create user in db
 func (r *userRepo) CreateUser(user entity.User) (entity.User, error) {
 	userCreated := entity.User{}
-	if err := r.conn.Create(&user).Scan(&userCreated).Error; err != nil {
+	tx := r.conn.Begin()
+	if err := tx.Error; err != nil {
 		return userCreated, err
 	}
-	fmt.Println(userCreated)
+	if err := tx.Create(&user).Scan(&userCreated).Error; err != nil {
+		tx.Rollback()
+		return userCreated, err
+	}
+	tx.Commit()
 	return userCreated, nil
+}
+
+func (r *userRepo) UserExist(email string) (entity.User, bool) {
+	var user entity.User
+	exist := r.conn.Select("email").Where("email = ?", email).First(&user).RecordNotFound()
+	return user, exist
 }

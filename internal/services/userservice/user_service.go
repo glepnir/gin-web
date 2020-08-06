@@ -20,10 +20,15 @@ func NewUserService(u repositories.UserRepository) services.UserServices {
 
 var _UserServ = (*services.UserServices)(nil)
 
-func (u *userServ) CreateUser(user entity.User) error {
-	_, err := u.userRepository.CreateUser(user)
-	if err != nil {
-		return err
+func (u *userServ) CreateUser(user entity.User) (error, bool) {
+	_, exist := u.userRepository.UserExist(user.Email)
+	if exist {
+		_, err := u.userRepository.CreateUser(user)
+		if err != nil {
+			return err, false
+		}
+		return nil, true
+	} else {
+		return nil, false
 	}
-	return nil
 }

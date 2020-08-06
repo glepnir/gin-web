@@ -9,7 +9,7 @@ import (
 )
 
 type UserServiceWriter interface {
-	CreateUser(user entity.User) error
+	CreateUser(user entity.User) (error, bool)
 }
 
 type UserServices interface {
