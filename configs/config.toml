@@ -3,6 +3,7 @@
 [http]
 host = ""
 port = 8080
+timeout = 5
 
 # Database Storage
 [storage]

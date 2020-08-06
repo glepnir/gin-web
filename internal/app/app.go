@@ -37,6 +37,7 @@ func (a *Application) Appinitial() {
 
 func (a *Application) Run() {
 	addr := a.Config.HTTP.Host + ":" + a.Config.HTTP.Port
+	timeout := a.Config.HTTP.TimeOut
 	srv := &http.Server{
 		Addr:    addr,
 		Handler: a.Route,
@@ -53,7 +54,7 @@ func (a *Application) Run() {
 	<-quit
 
 	log.Fatal("server shut down")
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout*time.Second)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {
 		log.Fatal("server shutdown err:", err)

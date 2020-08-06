@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"sync"
+	"time"
 
 	"github.com/glepnir/gin-web/pkg/finder"
 	"github.com/spf13/viper"
@@ -23,8 +24,9 @@ type Config struct {
 }
 
 type HTTP struct {
-	Host string
-	Port string
+	Host    string
+	Port    string
+	TimeOut time.Duration
 }
 
 type DataBase struct {
@@ -60,8 +62,9 @@ func (c *Config) MustLoadConf() {
 	})
 
 	c.HTTP = HTTP{
-		Host: viper.GetString("http.host"),
-		Port: viper.GetString("http.port"),
+		Host:    viper.GetString("http.host"),
+		Port:    viper.GetString("http.port"),
+		TimeOut: time.Duration(viper.GetInt("http.timeout")),
 	}
 
 	c.DataBase = DataBase{
