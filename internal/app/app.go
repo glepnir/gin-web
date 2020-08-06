@@ -28,7 +28,7 @@ func NewApplication(route *gin.Engine) *Application {
 	return &Application{Route: route}
 }
 
-func (a *Application) Appinitial() {
+func (a *Application) CreateApp() {
 	a.Config.MustLoadConf()
 	a.Route.Use(gin.Recovery())
 	configureDataBase(a.Config.DataBase)

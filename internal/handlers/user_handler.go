@@ -28,7 +28,7 @@ func (u *UserHandler) Create(c *gin.Context) {
 	user.Base.CreateAt = time.Now()
 	err, ok := u.userService.CreateUser(user)
 	if ok {
-		ginresp.Ok(c, "Create successful", nil, nil)
+		ginresp.Ok(c, "Create user success", nil, nil)
 	} else {
 		if err != nil {
 			ginresp.InternalError(c, "Create failed", nil, err)

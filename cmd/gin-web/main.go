@@ -12,6 +12,6 @@ import (
 func main() {
 	r := gin.Default()
 	instance := app.NewApplication(r)
-	instance.Appinitial()
+	instance.CreateApp()
 	instance.Run()
 }
