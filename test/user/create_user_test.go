@@ -22,7 +22,7 @@ type Response struct {
 	Data    interface{} `json:"data"`
 }
 
-func initTestCreateUser(body map[string]interface{}) (*httptest.ResponseRecorder, *gin.Engine) {
+func mockServer(body map[string]interface{}) (*httptest.ResponseRecorder, *gin.Engine) {
 	r := gin.Default()
 	app := app.NewApplication(r)
 	app.CreateApp()
@@ -45,7 +45,7 @@ func TestCreateUser(t *testing.T) {
 			"password": "123456",
 		}
 		actual := Response{}
-		w, _ := initTestCreateUser(body)
+		w, _ := mockServer(body)
 		if err := json.Unmarshal(w.Body.Bytes(), &actual); err != nil {
 			panic(err)
 		}
