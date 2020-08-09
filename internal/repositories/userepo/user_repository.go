@@ -31,12 +31,23 @@ func (r *userRepo) CreateUser(user entity.User) (entity.User, error) {
 		tx.Rollback()
 		return userCreated, err
 	}
-	tx.Commit()
-	return userCreated, nil
+	return userCreated, tx.Commit().Error
 }
 
-func (r *userRepo) UserExist(email string) (entity.User, bool) {
+func (r *userRepo) UserExist(phone string) (entity.User, bool) {
 	var user entity.User
-	exist := r.conn.Select("email").Where("email = ?", email).First(&user).RecordNotFound()
+	exist := r.conn.Select("phone").Where("phone = ?", phone).First(&user).RecordNotFound()
 	return user, exist
+}
+
+func (r *userRepo) UpdateUser(phone string, update entity.User) error {
+	tx := r.conn.Begin()
+	if err := tx.Error; err != nil {
+		return err
+	}
+	if err := tx.Where("phone = ?", phone).Update(update).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit().Error
 }

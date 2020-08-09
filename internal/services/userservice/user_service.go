@@ -21,7 +21,7 @@ func NewUserService(u repositories.UserRepository) services.UserServices {
 var _UserServ = (*services.UserServices)(nil)
 
 func (u *userServ) CreateUser(user entity.User) (error, bool) {
-	_, exist := u.userRepository.UserExist(user.Email)
+	_, exist := u.userRepository.UserExist(user.Phone)
 	if exist {
 		_, err := u.userRepository.CreateUser(user)
 		if err != nil {
@@ -31,4 +31,12 @@ func (u *userServ) CreateUser(user entity.User) (error, bool) {
 	} else {
 		return nil, false
 	}
+}
+
+func (u *userServ) UpdateUser(phone string, user entity.User) error {
+	err := u.userRepository.UpdateUser(phone, user)
+	if err != nil {
+		return err
+	}
+	return nil
 }

@@ -13,12 +13,12 @@ import (
 )
 
 func UserRoute(g *gin.RouterGroup) {
-	userg := g.Group("/user")
+	userg := g.Group("/users")
 	conn := &storage.DB{}
 	userRepository := userepo.NewUserRepository(conn.Get())
 	userService := userservice.NewUserService(userRepository)
 	userHandler := handlers.NewUserHandler(userService)
 	{
-		userg.POST("/create", userHandler.Create)
+		userg.POST("", userHandler.Create)
 	}
 }

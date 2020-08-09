@@ -7,17 +7,18 @@ package entity
 import (
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/jinzhu/gorm"
+	"github.com/rs/xid"
 )
 
 type Base struct {
-	ID       uuid.UUID `gorm:"type:uuid;primary_key" json:"id"`
-	CreateAt time.Time `gorm:"type:datatime" json:"create_at"`
-	UpdateAt time.Time `gorm:"type:datatime" json:"update_at"`
+	ID        xid.ID     `gorm:"column:id;primary_key;"`
+	CreatedAt time.Time  `gorm:"column:created_at;index;"`
+	UpdatedAt time.Time  `gorm:"column:updated_at;index;"`
+	DeletedAt *time.Time `gorm:"column:deleted_at;index;"`
 }
 
 // BeforeCreate is hooks to create uuid
 func (b *Base) BeforeCreate(scope *gorm.Scope) error {
-	return scope.SetColumn("ID", uuid.New())
+	return scope.SetColumn("ID", xid.New())
 }

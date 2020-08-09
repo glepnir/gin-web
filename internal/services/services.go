@@ -10,6 +10,7 @@ import (
 
 type UserServiceWriter interface {
 	CreateUser(user entity.User) (error, bool)
+	UpdateUser(phone string, user entity.User) error
 }
 
 type UserServices interface {

@@ -8,6 +8,7 @@ import "github.com/glepnir/gin-web/internal/storage/entity"
 
 type UserWriter interface {
 	CreateUser(user entity.User) (entity.User, error)
+	UpdateUser(phone string, update entity.User) error
 }
 
 type UserReader interface {

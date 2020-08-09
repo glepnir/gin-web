@@ -63,8 +63,8 @@ func (a *Application) Run() {
 	log.Fatal("erver exit")
 }
 
-func configureDataBase(cdb config.DataBase) {
-	err := storage.NewDB(cdb)
+func configureDataBase(dbconfig config.DataBase) {
+	err := storage.NewDB(dbconfig)
 	if err != nil {
 		panic(err)
 	}

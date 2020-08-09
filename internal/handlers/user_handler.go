@@ -5,13 +5,12 @@
 package handlers
 
 import (
-	"time"
-
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/glepnir/gin-web/internal/services"
 	"github.com/glepnir/gin-web/internal/storage/entity"
 	"github.com/glepnir/gin-web/pkg/ginresp"
+	"github.com/glepnir/gin-web/pkg/hash"
 )
 
 type UserHandler struct {
@@ -25,7 +24,9 @@ func NewUserHandler(u services.UserServices) *UserHandler {
 func (u *UserHandler) Create(c *gin.Context) {
 	var user entity.User
 	_ = c.ShouldBindBodyWith(&user, binding.JSON)
-	user.Base.CreateAt = time.Now()
+	hashpwd := hash.HashAndSalt([]byte(user.PassWord))
+	user.PassWord = hashpwd
+
 	err, ok := u.userService.CreateUser(user)
 	if ok {
 		ginresp.Ok(c, "Create user success", nil, nil)
@@ -37,4 +38,9 @@ func (u *UserHandler) Create(c *gin.Context) {
 		}
 	}
 
+}
+
+func (u *UserHandler) Update(c *gin.Context) {
+	var user entity.User
+	_ = c.ShouldBindBodyWith(&user, binding.JSON)
 }

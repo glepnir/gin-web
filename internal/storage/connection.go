@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/glepnir/gin-web/internal/config"
+	"github.com/glepnir/gin-web/internal/storage/entity"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
@@ -42,6 +43,9 @@ func NewDB(storage config.DataBase) error {
 	conn.DB().SetConnMaxLifetime(time.Duration(storage.MaxLifeTime) * time.Minute)
 	db := &DB{}
 	db.Set(conn)
+	if !conn.HasTable("users") {
+		conn.AutoMigrate(&entity.User{})
+	}
 	return nil
 }
 

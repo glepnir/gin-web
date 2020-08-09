@@ -7,7 +7,7 @@ package entity
 // User struct for user entity
 type User struct {
 	Base
-	Username string `json:"username"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	UserName string `gorm:"column:name;size:64;index;default:'';not null;" json:"username"`
+	PassWord string `gorm:"column:password;size:60;default:'';not null;" json:"password"`
+	Phone    string `gorm:"column:phone;size:20;index;default:'';not null;" json:"phone"`
 }
