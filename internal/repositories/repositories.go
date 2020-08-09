@@ -4,11 +4,13 @@
 
 package repositories
 
-import "github.com/glepnir/gin-web/internal/storage/entity"
+import (
+	"github.com/glepnir/gin-web/internal/storage/entity"
+)
 
 type UserWriter interface {
 	CreateUser(user entity.User) (entity.User, error)
-	UpdateUser(phone string, update entity.User) error
+	UpdateUser(id string, update entity.User) error
 }
 
 type UserReader interface {

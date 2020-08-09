@@ -40,12 +40,13 @@ func (r *userRepo) UserExist(phone string) (entity.User, bool) {
 	return user, exist
 }
 
-func (r *userRepo) UpdateUser(phone string, update entity.User) error {
+func (r *userRepo) UpdateUser(id string, update entity.User) error {
 	tx := r.conn.Begin()
 	if err := tx.Error; err != nil {
 		return err
 	}
-	if err := tx.Where("phone = ?", phone).Update(update).Error; err != nil {
+
+	if err := tx.Model(&update).Where("id = ?", id).Update(update).Error; err != nil {
 		tx.Rollback()
 		return err
 	}

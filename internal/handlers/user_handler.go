@@ -7,6 +7,7 @@ package handlers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"github.com/glepnir/gin-web/internal/schema"
 	"github.com/glepnir/gin-web/internal/services"
 	"github.com/glepnir/gin-web/internal/storage/entity"
 	"github.com/glepnir/gin-web/pkg/ginresp"
@@ -42,5 +43,14 @@ func (u *UserHandler) Create(c *gin.Context) {
 
 func (u *UserHandler) Update(c *gin.Context) {
 	var user entity.User
+	param := schema.UserID{}
+	_ = c.ShouldBindUri(&param)
 	_ = c.ShouldBindBodyWith(&user, binding.JSON)
+
+	err := u.userService.UpdateUser(param.ID, user)
+	if err != nil {
+		ginresp.InternalError(c, "更新失败", nil, err)
+	} else {
+		ginresp.Ok(c, "更新成功", nil, nil)
+	}
 }

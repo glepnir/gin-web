@@ -33,8 +33,8 @@ func (u *userServ) CreateUser(user entity.User) (error, bool) {
 	}
 }
 
-func (u *userServ) UpdateUser(phone string, user entity.User) error {
-	err := u.userRepository.UpdateUser(phone, user)
+func (u *userServ) UpdateUser(id string, user entity.User) error {
+	err := u.userRepository.UpdateUser(id, user)
 	if err != nil {
 		return err
 	}

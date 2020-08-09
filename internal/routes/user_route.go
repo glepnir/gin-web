@@ -20,5 +20,6 @@ func UserRoute(g *gin.RouterGroup) {
 	userHandler := handlers.NewUserHandler(userService)
 	{
 		userg.POST("", userHandler.Create)
+		userg.PUT(":id", userHandler.Update)
 	}
 }
