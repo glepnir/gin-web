@@ -5,13 +5,14 @@
 package handlers
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/glepnir/gin-web/internal/schema"
 	"github.com/glepnir/gin-web/internal/services"
-	"github.com/glepnir/gin-web/internal/storage/entity"
 	"github.com/glepnir/gin-web/pkg/ginresp"
-	"github.com/glepnir/gin-web/pkg/hash"
+	"github.com/glepnir/gin-web/pkg/validator"
 )
 
 type UserHandler struct {
@@ -23,31 +24,42 @@ func NewUserHandler(u services.UserServices) *UserHandler {
 }
 
 func (u *UserHandler) Create(c *gin.Context) {
-	var user entity.User
+	var user schema.CreateUserSchema
 	_ = c.ShouldBindBodyWith(&user, binding.JSON)
-	hashpwd := hash.HashAndSalt([]byte(user.PassWord))
-	user.PassWord = hashpwd
+	fmt.Println(user.ExpireTime)
+	v := &validator.CustomValidator{}
+	err := v.Validate(&user)
+	if err != nil {
+		ginresp.BadRequest(c, err.Error(), nil, err)
+		return
+	}
 
 	err, ok := u.userService.CreateUser(user)
 	if ok {
-		ginresp.Ok(c, "Create user success", nil, nil)
+		ginresp.Ok(c, "添加用户成功", nil, nil)
 	} else {
 		if err != nil {
-			ginresp.InternalError(c, "Create failed", nil, err)
+			ginresp.InternalError(c, "服务器异常添加失败", nil, err)
 		} else {
-			ginresp.Conflict(c, "User Exist Create failed", nil, nil)
+			ginresp.Conflict(c, "用户已存在添加失败", nil, nil)
 		}
 	}
 
 }
 
 func (u *UserHandler) Update(c *gin.Context) {
-	var user entity.User
+	var user schema.UpdateUserSchema
 	param := schema.UserID{}
 	_ = c.ShouldBindUri(&param)
 	_ = c.ShouldBindBodyWith(&user, binding.JSON)
+	v := new(validator.CustomValidator)
+	err := v.Validate(&user)
+	if err != nil {
+		ginresp.BadRequest(c, err.Error(), nil, nil)
+		return
+	}
 
-	err := u.userService.UpdateUser(param.ID, user)
+	err = u.userService.UpdateUser(param.ID, user)
 	if err != nil {
 		ginresp.InternalError(c, "更新失败", nil, err)
 	} else {

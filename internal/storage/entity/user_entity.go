@@ -4,10 +4,16 @@
 
 package entity
 
+import "time"
+
 // User struct for user entity
 type User struct {
 	Base
-	UserName string `gorm:"column:name;size:64;index;default:'';not null;" json:"username"`
-	PassWord string `gorm:"column:password;size:60;default:'';not null;" json:"password"`
-	Phone    string `gorm:"column:phone;size:20;index;default:'';not null;" json:"phone"`
+	UserName       string    `gorm:"column:username;size:64;index;default:'';not null;" `
+	PassWord       string    `gorm:"column:password;size:60;default:'';not null;"`
+	Phone          string    `gorm:"column:phone;size:20;index;default:'';not null;"`
+	CompanyName    string    `gorm:"column:companyname;index;default:'';" `
+	Status         int       `gorm:"column:status;index;default:0;not null;"`
+	CompanyAddress string    `gorm:"column:address;default:'';size:255"`
+	ExpireTime     time.Time `gorm:"column:expiretime;index"`
 }

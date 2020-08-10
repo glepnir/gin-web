@@ -5,12 +5,12 @@
 package services
 
 import (
-	"github.com/glepnir/gin-web/internal/storage/entity"
+	"github.com/glepnir/gin-web/internal/schema"
 )
 
 type UserServiceWriter interface {
-	CreateUser(user entity.User) (error, bool)
-	UpdateUser(id string, user entity.User) error
+	CreateUser(user schema.CreateUserSchema) (error, bool)
+	UpdateUser(id string, user schema.UpdateUserSchema) error
 }
 
 type UserServices interface {

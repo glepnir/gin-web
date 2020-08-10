@@ -12,7 +12,7 @@ import (
 
 func BadRequest(c *gin.Context, message string, data interface{}, err error) {
 	c.JSON(http.StatusBadRequest, gin.H{
-		"status":  http.StatusOK,
+		"status":  http.StatusBadRequest,
 		"message": message,
 		"data":    data,
 		"error":   err,

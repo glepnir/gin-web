@@ -43,9 +43,7 @@ func NewDB(storage config.DataBase) error {
 	conn.DB().SetConnMaxLifetime(time.Duration(storage.MaxLifeTime) * time.Minute)
 	db := &DB{}
 	db.Set(conn)
-	if !conn.HasTable("users") {
-		conn.AutoMigrate(&entity.User{})
-	}
+	AutoMigrate(conn)
 	return nil
 }
 
@@ -55,4 +53,10 @@ func (d *DB) Get() *gorm.DB {
 
 func (d *DB) Set(db *gorm.DB) {
 	conn = db
+}
+
+func AutoMigrate(conn *gorm.DB) {
+	if !conn.HasTable("users") {
+		conn.AutoMigrate(&entity.User{})
+	}
 }
