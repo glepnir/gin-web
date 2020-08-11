@@ -19,6 +19,8 @@ func UserRoute(g *gin.RouterGroup) {
 	userService := userservice.NewUserService(userRepository)
 	userHandler := handlers.NewUserHandler(userService)
 	{
+		userg.GET("", userHandler.GetUsers)
+		userg.GET(":id", userHandler.GetUserById)
 		userg.POST("", userHandler.Create)
 		userg.PUT(":id", userHandler.Update)
 	}

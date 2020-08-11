@@ -18,7 +18,8 @@ type CreateUserSchema struct {
 	ExpireTime     string `json:"expiretime" validate:"required" label:"到期时间"`
 }
 
-type UpdateUserSchema struct {
+type UserSchema struct {
+	UserID
 	UserName       string `json:"username" validate:"required" label:"用户姓名"`
 	Phone          string `json:"phone" validate:"required,mobile" label:"联系电话"`
 	CompanyName    string `json:"companyname" validate:"required" label:"公司名称"`

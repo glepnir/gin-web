@@ -52,3 +52,17 @@ func (r *userRepo) UpdateUser(id string, update entity.User) error {
 	}
 	return tx.Commit().Error
 }
+
+func (r *userRepo) GetUsers() []entity.User {
+	var users []entity.User
+	r.conn.Select(
+		"id,username,phone,status,companyname,companyaddress,expiretime,created_at,updated_at").Where("deleted_at is null").First(&users)
+	return users
+}
+
+func (r *userRepo) GetUserByID(id string) (entity.User, bool) {
+	var user entity.User
+	exist := r.conn.Select(
+		"id,username,phone,status,companyname,companyaddress,expiretime,created_at,updated_at").Where("id = ?", id).First(&user).RecordNotFound()
+	return user, exist
+}

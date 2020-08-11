@@ -5,8 +5,6 @@
 package handlers
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/glepnir/gin-web/internal/schema"
@@ -26,8 +24,8 @@ func NewUserHandler(u services.UserServices) *UserHandler {
 func (u *UserHandler) Create(c *gin.Context) {
 	var user schema.CreateUserSchema
 	_ = c.ShouldBindBodyWith(&user, binding.JSON)
-	fmt.Println(user.ExpireTime)
-	v := &validator.CustomValidator{}
+
+	v := new(validator.CustomValidator)
 	err := v.Validate(&user)
 	if err != nil {
 		ginresp.BadRequest(c, err.Error(), nil, err)
@@ -48,10 +46,11 @@ func (u *UserHandler) Create(c *gin.Context) {
 }
 
 func (u *UserHandler) Update(c *gin.Context) {
-	var user schema.UpdateUserSchema
+	var user schema.UserSchema
 	param := schema.UserID{}
 	_ = c.ShouldBindUri(&param)
 	_ = c.ShouldBindBodyWith(&user, binding.JSON)
+
 	v := new(validator.CustomValidator)
 	err := v.Validate(&user)
 	if err != nil {
@@ -64,5 +63,21 @@ func (u *UserHandler) Update(c *gin.Context) {
 		ginresp.InternalError(c, "更新失败", nil, err)
 	} else {
 		ginresp.Ok(c, "更新成功", nil, nil)
+	}
+}
+
+func (u *UserHandler) GetUsers(c *gin.Context) {
+	users := u.userService.GetUsers()
+	ginresp.Ok(c, "", users, nil)
+}
+
+func (u *UserHandler) GetUserById(c *gin.Context) {
+	var param schema.UserID
+	_ = c.ShouldBindUri(&param)
+	user, ok := u.userService.GetUserByID(param.ID)
+	if ok {
+		ginresp.Ok(c, "", user, nil)
+	} else {
+		ginresp.NotFound(c, "未查到该用户", nil, nil)
 	}
 }

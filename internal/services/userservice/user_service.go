@@ -48,7 +48,7 @@ func (u *userServ) CreateUser(userschema schema.CreateUserSchema) (error, bool) 
 	}
 }
 
-func (u *userServ) UpdateUser(id string, updateuser schema.UpdateUserSchema) error {
+func (u *userServ) UpdateUser(id string, updateuser schema.UserSchema) error {
 	localtime, _ := time.ParseInLocation("2006-01-02 15:04:05", updateuser.ExpireTime, time.Local)
 	user := entity.User{
 		UserName:       updateuser.UserName,
@@ -63,4 +63,17 @@ func (u *userServ) UpdateUser(id string, updateuser schema.UpdateUserSchema) err
 		return err
 	}
 	return nil
+}
+
+func (u *userServ) GetUsers() []entity.User {
+	users := u.userRepository.GetUsers()
+	return users
+}
+
+func (u *userServ) GetUserByID(id string) (entity.User, bool) {
+	user, exist := u.userRepository.GetUserByID(id)
+	if exist {
+		return user, false
+	}
+	return user, true
 }
