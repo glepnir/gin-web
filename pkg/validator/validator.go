@@ -27,9 +27,6 @@ type CustomValidator struct {
 func (c *CustomValidator) Validate(i interface{}) error {
 	c.lazyInit()
 
-	c.validate.RegisterTagNameFunc(func(field reflect.StructField) string {
-		return field.Tag.Get("json")
-	})
 	_ = c.validate.RegisterValidation("mobile", mobile)
 
 	c.validate.RegisterTagNameFunc(func(filed reflect.StructField) string {

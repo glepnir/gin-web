@@ -37,6 +37,7 @@ type DataBase struct {
 	Port        int
 	DBname      string
 	Charset     string
+	TablePrefix string
 	MaxIdle     int
 	MaxConn     int
 	MaxLifeTime int
@@ -75,6 +76,7 @@ func (c *Config) MustLoadConf() {
 		Port:        viper.GetInt("storage.port"),
 		DBname:      viper.GetString("storage.dbname"),
 		Charset:     viper.GetString("storage.charset"),
+		TablePrefix: viper.GetString("storage.table_prefix"),
 		MaxIdle:     viper.GetInt("storage.max_idle"),
 		MaxConn:     viper.GetInt("storage.max_conn"),
 		MaxLifeTime: viper.GetInt("storage.max_lifetime"),

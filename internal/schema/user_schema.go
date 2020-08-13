@@ -14,7 +14,7 @@ type CreateUserSchema struct {
 	Phone          string `json:"phone" validate:"required,mobile" label:"联系电话"`
 	CompanyName    string `json:"companyname" validate:"required" label:"公司名称"`
 	CompanyAddress string `json:"companyaddress" validate:"required" label:"公司地址"`
-	Status         int    `json:"status" validate:"required" label:"状态"`
+	Status         int    `json:"status" validate:"required,max=2,min=1" label:"状态"`
 	ExpireTime     string `json:"expiretime" validate:"required" label:"到期时间"`
 }
 
@@ -24,6 +24,6 @@ type UserSchema struct {
 	Phone          string `json:"phone" validate:"required,mobile" label:"联系电话"`
 	CompanyName    string `json:"companyname" validate:"required" label:"公司名称"`
 	CompanyAddress string `json:"companyaddress" validate:"required" label:"公司地址"`
-	Status         int    `json:"status" validate:"required" label:"状态"`
+	Status         int    `json:"status" validate:"required,max=2,min=1" label:"状态"`
 	ExpireTime     string `json:"expiretime" validate:"required" label:"到期时间"`
 }
