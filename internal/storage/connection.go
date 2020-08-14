@@ -8,8 +8,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/casbin/casbin/v2"
-	gormadapter "github.com/casbin/gorm-adapter/v3"
 	"github.com/glepnir/gin-web/internal/config"
 	"github.com/glepnir/gin-web/internal/storage/entity"
 	_ "github.com/go-sql-driver/mysql"
@@ -46,7 +44,6 @@ func NewDB(storage config.DataBase) error {
 	db := &DB{}
 	db.Set(conn)
 	AutoMigrate(conn, storage.TablePrefix)
-	LoadCasbin(dbURI)
 	return nil
 }
 
@@ -58,6 +55,10 @@ func (d *DB) Set(db *gorm.DB) {
 	conn = db
 }
 
+func CloseDB() {
+	defer conn.Close()
+}
+
 func AutoMigrate(conn *gorm.DB, tableprefix string) {
 	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
 		return tableprefix + defaultTableName
@@ -66,9 +67,10 @@ func AutoMigrate(conn *gorm.DB, tableprefix string) {
 	if !conn.HasTable("users") {
 		conn.AutoMigrate(&entity.User{})
 	}
-}
-
-func LoadCasbin(dbURI string) {
-	a, _ := gormadapter.NewAdapter("mysql", dbURI, true) // Your driver and data source.
-	_, _ = casbin.NewEnforcer("../../configs/model.conf", a)
+	if !conn.HasTable("menus") {
+		conn.AutoMigrate(&entity.Menu{})
+	}
+	if !conn.HasTable("roles") {
+		conn.AutoMigrate(&entity.Role{})
+	}
 }

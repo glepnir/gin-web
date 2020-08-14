@@ -25,8 +25,7 @@ func (u *UserHandler) Create(c *gin.Context) {
 	var user schema.CreateUserSchema
 	_ = c.ShouldBindBodyWith(&user, binding.JSON)
 
-	v := new(validator.CustomValidator)
-	err := v.Validate(&user)
+	err := validator.Validate(&user)
 	if err != nil {
 		ginresp.BadRequest(c, err.Error(), nil, err)
 		return
@@ -51,8 +50,7 @@ func (u *UserHandler) Update(c *gin.Context) {
 	_ = c.ShouldBindUri(&param)
 	_ = c.ShouldBindBodyWith(&user, binding.JSON)
 
-	v := new(validator.CustomValidator)
-	err := v.Validate(&user)
+	err := validator.Validate(&user)
 	if err != nil {
 		ginresp.BadRequest(c, err.Error(), nil, nil)
 		return

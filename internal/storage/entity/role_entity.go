@@ -9,5 +9,5 @@ type Role struct {
 	Name     string `gorm:"column:name;size:100;index;default:'';not null;"`
 	Sequence int    `gorm:"column:sequence;index;default:0;not null;"`
 	Status   int    `gorm:"column:status;index;default:0;not null;"`
-	Creator  string `gorm:"column:creator;size:36;"`
+	Creator  string `gorm:"column:creator;size:36;default:'';not null;"`
 }

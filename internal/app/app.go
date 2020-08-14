@@ -37,7 +37,7 @@ func (a *Application) CreateApp() {
 
 func (a *Application) Run() {
 	addr := a.Config.HTTP.Host + ":" + a.Config.HTTP.Port
-	timeout := a.Config.HTTP.TimeOut
+	shutdowntimeout := a.Config.HTTP.ShutDownTimeOut
 	srv := &http.Server{
 		Addr:    addr,
 		Handler: a.Route,
@@ -49,18 +49,20 @@ func (a *Application) Run() {
 		}
 	}()
 
+	defer storage.CloseDB()
+
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 
 	log.Fatal("server shut down")
-	ctx, cancel := context.WithTimeout(context.Background(), timeout*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), shutdowntimeout*time.Second)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {
 		log.Fatal("server shutdown err:", err)
 	}
 
-	log.Fatal("erver exit")
+	log.Fatal("server exit")
 }
 
 func configureDataBase(dbconfig config.DataBase) {
