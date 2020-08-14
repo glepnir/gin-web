@@ -75,5 +75,6 @@ func configureDataBase(dbconfig config.DataBase) {
 func configureRouter(r *gin.Engine) {
 	g := r.Group("/api/v1")
 	routes.HealthRouter(g)
+	routes.LoginRoute(g)
 	routes.UserRoute(g)
 }

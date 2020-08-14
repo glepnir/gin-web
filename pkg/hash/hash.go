@@ -15,3 +15,11 @@ func HashAndSalt(pwd []byte) string {
 	}
 	return string(hash)
 }
+
+func HashCompare(hashpassword, password []byte) bool {
+	err := bcrypt.CompareHashAndPassword(hashpassword, password)
+	if err != nil {
+		return false
+	}
+	return true
+}

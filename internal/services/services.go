@@ -17,6 +17,7 @@ type UserServiceWriter interface {
 type UserServiceReader interface {
 	GetUsers() []entity.User
 	GetUserByID(id string) (entity.User, bool)
+	GetUserByPhone(phone string) (entity.User, bool)
 }
 
 type UserServices interface {

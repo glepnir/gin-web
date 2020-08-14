@@ -77,3 +77,12 @@ func (u *userServ) GetUserByID(id string) (entity.User, bool) {
 	}
 	return user, true
 }
+
+func (u *userServ) GetUserByPhone(phone string) (entity.User, bool) {
+	user, exist := u.userRepository.GetUserByPhone(phone)
+	if exist {
+		return user, true
+	} else {
+		return user, false
+	}
+}

@@ -17,6 +17,7 @@ type UserReader interface {
 	UserExist(name string) (entity.User, bool)
 	GetUsers() []entity.User
 	GetUserByID(id string) (entity.User, bool)
+	GetUserByPhone(phone string) (entity.User, bool)
 }
 
 type UserRepository interface {

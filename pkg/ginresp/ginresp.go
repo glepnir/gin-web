@@ -10,6 +10,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func UnAuthorized(c *gin.Context, message string, data interface{}, err error) {
+	c.JSON(http.StatusUnauthorized, gin.H{
+		"status":  http.StatusUnauthorized,
+		"message": message,
+		"data":    data,
+		"error":   err,
+	})
+}
+
 func BadRequest(c *gin.Context, message string, data interface{}, err error) {
 	c.JSON(http.StatusBadRequest, gin.H{
 		"status":  http.StatusBadRequest,

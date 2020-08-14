@@ -66,3 +66,12 @@ func (r *userRepo) GetUserByID(id string) (entity.User, bool) {
 		"id,username,phone,status,companyname,companyaddress,expiretime,created_at,updated_at").Where("id = ?", id).First(&user).RecordNotFound()
 	return user, exist
 }
+
+func (r *userRepo) GetUserByPhone(phone string) (entity.User, bool) {
+	var user entity.User
+	exist := r.conn.Where("phone = ?", phone).First(&user).RecordNotFound()
+	if exist {
+		return user, false
+	}
+	return user, true
+}
