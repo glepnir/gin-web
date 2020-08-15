@@ -7,15 +7,15 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/glepnir/gin-web/internal/handlers"
-	"github.com/glepnir/gin-web/internal/repositories/userepo"
-	"github.com/glepnir/gin-web/internal/services/userservice"
+	"github.com/glepnir/gin-web/internal/repositories/imprepository"
+	"github.com/glepnir/gin-web/internal/services/impservice"
 	"github.com/glepnir/gin-web/internal/storage"
 )
 
 func LoginRoute(r *gin.RouterGroup) {
 	conn := &storage.DB{}
-	userRepository := userepo.NewUserRepository(conn.Get())
-	userService := userservice.NewUserService(userRepository)
-	userHandler := handlers.NewUserHandler(userService)
-	r.POST("/login", userHandler.Login)
+	userRepo := imprepository.NewUserRepository(conn.Get())
+	loginServ := impservice.NewLoginServ(userRepo)
+	loginHandler := handlers.NewLoginHandler(loginServ)
+	r.POST("/login", loginHandler.Login)
 }
