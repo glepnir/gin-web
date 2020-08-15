@@ -13,6 +13,7 @@ import (
 	"github.com/glepnir/gin-web/internal/schema"
 	"github.com/glepnir/gin-web/internal/services"
 	"github.com/glepnir/gin-web/pkg/ginresp"
+	"github.com/glepnir/gin-web/pkg/validator"
 )
 
 type LoginHandler struct {
@@ -25,9 +26,15 @@ func NewLoginHandler(l services.LoginServices) *LoginHandler {
 
 func (l *LoginHandler) Login(c *gin.Context) {
 	var login schema.LoginSchema
-	err := c.ShouldBindBodyWith(&login, binding.JSON)
+	err := c.ShouldBindWith(&login, binding.JSON)
 	if err != nil {
 		ginresp.BadRequest(c, "请求错误", nil, err)
+		return
+	}
+	err = validator.Validate(login)
+	if err != nil {
+		ginresp.BadRequest(c, err.Error(), nil, nil)
+		return
 	}
 	loginresult, err := l.loginservice.Login(login)
 	if errors.Is(err, global.UserNotFound) {
