@@ -77,4 +77,5 @@ func configureRouter(r *gin.Engine) {
 	routes.HealthRouter(g)
 	routes.LoginRoute(g)
 	routes.UserRoute(g)
+	routes.RoleRoute(g)
 }

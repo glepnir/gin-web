@@ -14,14 +14,17 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-var conn *gorm.DB
+var (
+	conn  *gorm.DB
+	dbURI string
+)
 
 type DB struct{}
 
 func NewDB(storage config.DataBase) error {
 	driver := storage.Driver
 
-	dbURI := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=True&loc=Local",
+	dbURI = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=True&loc=Local",
 		storage.User,
 		storage.Password,
 		storage.Host,
@@ -59,6 +62,10 @@ func CloseDB() {
 	defer conn.Close()
 }
 
+func GetDBURI() string {
+	return dbURI
+}
+
 func AutoMigrate(conn *gorm.DB, tableprefix string) {
 	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
 		return tableprefix + defaultTableName
@@ -66,11 +73,5 @@ func AutoMigrate(conn *gorm.DB, tableprefix string) {
 
 	if !conn.HasTable("users") {
 		conn.AutoMigrate(&entity.User{})
-	}
-	if !conn.HasTable("menus") {
-		conn.AutoMigrate(&entity.Menu{})
-	}
-	if !conn.HasTable("roles") {
-		conn.AutoMigrate(&entity.Role{})
 	}
 }

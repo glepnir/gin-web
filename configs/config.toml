@@ -18,3 +18,4 @@ table_prefix = "edu_"
 max_idle = 2
 max_conn = 10
 max_lifetime = 5
+
