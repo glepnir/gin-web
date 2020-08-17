@@ -16,6 +16,7 @@ type CreateUserSchema struct {
 	CompanyAddress string `json:"companyaddress" validate:"required" label:"公司地址"`
 	Status         int    `json:"status" validate:"required,max=2,min=1" label:"状态"`
 	ExpireTime     string `json:"expiretime" validate:"required" label:"到期时间"`
+	RoleName       string `json:"rolename" validate:"required" label:"权限"`
 }
 
 type UserSchema struct {
@@ -26,4 +27,5 @@ type UserSchema struct {
 	CompanyAddress string `json:"companyaddress" validate:"required" label:"公司地址"`
 	Status         int    `json:"status" validate:"required,max=2,min=1" label:"状态"`
 	ExpireTime     string `json:"expiretime" validate:"required" label:"到期时间"`
+	RoleName       string `json:"rolename" validate:"required" label:"权限"`
 }

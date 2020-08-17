@@ -37,6 +37,7 @@ func (u *userServ) CreateUser(userschema schema.CreateUserSchema) (error, bool) 
 			CompanyAddress: userschema.CompanyAddress,
 			Status:         userschema.Status,
 			ExpireTime:     localtime,
+			RoleName:       userschema.RoleName,
 		}
 		_, err := u.userRepository.CreateUser(user)
 		if err != nil {

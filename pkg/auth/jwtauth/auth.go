@@ -6,6 +6,7 @@ package jwtauth
 
 import (
 	"crypto/rsa"
+	"errors"
 	"io/ioutil"
 	"time"
 
@@ -108,4 +109,25 @@ func (j *JwtAuth) GenerateAccessToken(userID string) (string, error) {
 
 func (j *JwtAuth) GenerateRefreshToken() {
 
+}
+
+func (j *JwtAuth) parseToken(tokenstring string) (*jwt.StandardClaims, error) {
+	token, err := jwt.ParseWithClaims(tokenstring, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return j.verifyKey, nil
+	})
+	if err != nil {
+		return nil, err
+	} else if !token.Valid {
+		return nil, errors.New("invalid token")
+	}
+	return token.Claims.(*jwt.StandardClaims), nil
+}
+
+func (j *JwtAuth) ParseUserID(tokenstring string) (string, error) {
+	j.LoadRsaFile()
+	claims, err := j.parseToken(tokenstring)
+	if err != nil {
+		return "", err
+	}
+	return claims.Subject, nil
 }

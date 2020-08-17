@@ -14,4 +14,5 @@ type Auther interface {
 	GenerateToken(userID string) (TokenInfo, error)
 	GenerateAccessToken(userID string) (string, error)
 	GenerateRefreshToken()
+	ParseUserID(tokenstring string) (string, error)
 }

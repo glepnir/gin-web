@@ -15,6 +15,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/glepnir/gin-web/internal/config"
+	"github.com/glepnir/gin-web/internal/middlewares"
 	"github.com/glepnir/gin-web/internal/routes"
 	"github.com/glepnir/gin-web/internal/storage"
 )
@@ -76,6 +77,8 @@ func configureRouter(r *gin.Engine) {
 	g := r.Group("/api/v1")
 	routes.HealthRouter(g)
 	routes.LoginRoute(g)
+	g.Use(middlewares.CheckAuth())
+	g.Use(middlewares.CheckPermission())
 	routes.UserRoute(g)
 	routes.RoleRoute(g)
 }

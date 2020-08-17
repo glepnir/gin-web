@@ -75,3 +75,12 @@ func (r *userRepo) GetUserByPhone(phone string) (entity.User, bool) {
 	}
 	return user, true
 }
+
+func (r *userRepo) GetUserRoleName(userid string) (string, bool) {
+	var user entity.User
+	exist := r.conn.Select("rolename").Where("id = ?", userid).First(&user).RecordNotFound()
+	if exist {
+		return "", false
+	}
+	return user.RoleName, true
+}

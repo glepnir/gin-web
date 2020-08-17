@@ -5,6 +5,8 @@
 package handlers
 
 import (
+	"log"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/glepnir/gin-web/internal/schema"
@@ -20,15 +22,17 @@ func NewRoleHandler() *RoleHandler {
 func (r *RoleHandler) AddRole(c *gin.Context) {
 	var role schema.RoleSchema
 	c.ShouldBindBodyWith(&role, binding.JSON)
+
 	result, err := role.AddRole()
 	if err != nil {
+		log.Fatal(err)
 		ginresp.InternalError(c, "添加失败", nil, err)
 		return
 	} else {
 		if result {
 			ginresp.Ok(c, "添加成功", nil, nil)
 		} else {
-			ginresp.InternalError(c, "添加失败", nil, err)
+			ginresp.Ok(c, "添加失败名称已存在", nil, nil)
 		}
 	}
 }

@@ -5,13 +5,10 @@
 package impservice
 
 import (
-	"os"
-
 	"github.com/glepnir/gin-web/internal/global"
 	"github.com/glepnir/gin-web/internal/repositories"
 	"github.com/glepnir/gin-web/internal/schema"
 	"github.com/glepnir/gin-web/internal/services"
-	"github.com/glepnir/gin-web/pkg/auth/jwtauth"
 	"github.com/glepnir/gin-web/pkg/hash"
 )
 
@@ -28,12 +25,7 @@ func (l *loginServ) Login(login schema.LoginSchema) (schema.LoginResultSchema, e
 	if exist {
 		pass := hash.HashCompare([]byte(user.PassWord), []byte(login.PassWord))
 		if pass {
-			withexpired := jwtauth.WithExpired(7200)
-			pwd, _ := os.Getwd()
-			withprivate := jwtauth.WithPrivateKey(pwd + "/configs/app.rsa")
-			withpublic := jwtauth.WithPubKeyPath(pwd + "/configs/app.rsa.pub")
-			auth := jwtauth.NewJwtAuth(withexpired, withprivate, withpublic)
-
+			auth := global.NewAuth()
 			token, _ := auth.GenerateToken(user.ID.String())
 			return schema.LoginResultSchema{AccessToken: token.AccessToken}, nil
 		} else {

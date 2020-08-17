@@ -16,4 +16,5 @@ type User struct {
 	CompanyName    string    `gorm:"column:companyname;index;default:'';" `
 	CompanyAddress string    `gorm:"column:companyaddress;default:'';size:255"`
 	ExpireTime     time.Time `gorm:"column:expiretime;index"`
+	RoleName       string    `gorm:"column:rolename;size:40;default:''"`
 }

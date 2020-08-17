@@ -5,7 +5,6 @@
 package schema
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/casbin/casbin/v2"
@@ -24,7 +23,6 @@ func LoadCasbin() *casbin.Enforcer {
 	a, _ := gormadapter.NewAdapter("mysql", dbURI, true) // Your driver and data source.
 	rootpath, _ := os.Getwd()
 	path := rootpath + "/configs/model.conf"
-	fmt.Println(path)
 	e, _ := casbin.NewEnforcer(path, a)
 	e.LoadPolicy()
 	return e
