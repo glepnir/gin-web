@@ -27,7 +27,12 @@ func (l *loginServ) Login(login schema.LoginSchema) (schema.LoginResultSchema, e
 		if pass {
 			auth := global.NewAuth()
 			token, _ := auth.GenerateToken(user.ID.String())
-			return schema.LoginResultSchema{AccessToken: token.AccessToken}, nil
+			return schema.LoginResultSchema{
+				AccessToken: token.AccessToken,
+				UserName:    user.UserName,
+				Phone:       user.Phone,
+				CompanyName: user.CompanyName,
+			}, nil
 		} else {
 			return schema.LoginResultSchema{}, global.WrongPassWord
 		}

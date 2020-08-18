@@ -12,7 +12,12 @@ import (
 
 func CheckAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.Request.Header.Get("Authorization")
+		token, err := c.Cookie("edu-token")
+		if err != nil {
+			ginresp.UnAuthorized(c, "无权访问请登录后访问", nil, nil)
+			c.Abort()
+			return
+		}
 		if token == "" {
 			ginresp.UnAuthorized(c, "无权访问请登录后访问", nil, nil)
 			c.Abort()

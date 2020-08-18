@@ -12,7 +12,7 @@ import (
 
 func UnAuthorized(c *gin.Context, message string, data interface{}, err error) {
 	c.JSON(http.StatusUnauthorized, gin.H{
-		"status":  http.StatusUnauthorized,
+		"code":    "-1",
 		"message": message,
 		"data":    data,
 		"error":   err,
@@ -21,7 +21,7 @@ func UnAuthorized(c *gin.Context, message string, data interface{}, err error) {
 
 func BadRequest(c *gin.Context, message string, data interface{}, err error) {
 	c.JSON(http.StatusBadRequest, gin.H{
-		"status":  http.StatusBadRequest,
+		"code":    "0",
 		"message": message,
 		"data":    data,
 		"error":   err,
@@ -30,7 +30,7 @@ func BadRequest(c *gin.Context, message string, data interface{}, err error) {
 
 func Conflict(c *gin.Context, message string, data interface{}, err error) {
 	c.JSON(http.StatusConflict, gin.H{
-		"status":  http.StatusConflict,
+		"code":    "0",
 		"message": message,
 		"data":    data,
 		"error":   err,
@@ -39,7 +39,7 @@ func Conflict(c *gin.Context, message string, data interface{}, err error) {
 
 func NotFound(c *gin.Context, message string, data interface{}, err error) {
 	c.JSON(http.StatusNotFound, gin.H{
-		"status":  http.StatusNotFound,
+		"code":    "0",
 		"message": message,
 		"data":    data,
 		"error":   err,
@@ -48,7 +48,16 @@ func NotFound(c *gin.Context, message string, data interface{}, err error) {
 
 func Ok(c *gin.Context, message string, data interface{}, err error) {
 	c.JSON(http.StatusOK, gin.H{
-		"status":  http.StatusOK,
+		"code":    "1",
+		"message": message,
+		"data":    data,
+		"error":   err,
+	})
+}
+
+func PassWordWrong(c *gin.Context, message string, data interface{}, err error) {
+	c.JSON(http.StatusOK, gin.H{
+		"code":    "0",
 		"message": message,
 		"data":    data,
 		"error":   err,
@@ -57,7 +66,7 @@ func Ok(c *gin.Context, message string, data interface{}, err error) {
 
 func Forbidden(c *gin.Context, message string, data interface{}, err error) {
 	c.JSON(http.StatusForbidden, gin.H{
-		"status":  http.StatusForbidden,
+		"code":    "-1",
 		"message": message,
 		"data":    data,
 		"error":   err,
@@ -66,7 +75,7 @@ func Forbidden(c *gin.Context, message string, data interface{}, err error) {
 
 func InternalError(c *gin.Context, message string, data interface{}, err error) {
 	c.JSON(http.StatusInternalServerError, gin.H{
-		"status":  http.StatusInternalServerError,
+		"code":    "-1",
 		"message": message,
 		"data":    data,
 		"error":   err,

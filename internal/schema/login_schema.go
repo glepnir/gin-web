@@ -10,6 +10,8 @@ type LoginSchema struct {
 }
 
 type LoginResultSchema struct {
-	AccessToken  string
-	RefreshToken string
+	AccessToken string `json:"access_token"`
+	UserName    string `json:"username"`
+	Phone       string `json:"phone"`
+	CompanyName string `json:"companyname"`
 }

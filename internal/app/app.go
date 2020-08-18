@@ -74,11 +74,14 @@ func configureDataBase(dbconfig config.DataBase) {
 }
 
 func configureRouter(r *gin.Engine) {
-	g := r.Group("/api/v1")
+	r.LoadHTMLGlob("template/*")
+	r.Static("/static/", "./static/")
+	g := r.Group("/")
 	routes.HealthRouter(g)
 	routes.LoginRoute(g)
 	g.Use(middlewares.CheckAuth())
 	g.Use(middlewares.CheckPermission())
 	routes.UserRoute(g)
 	routes.RoleRoute(g)
+	routes.IndexRoute(g)
 }

@@ -43,7 +43,7 @@ func CheckPermission() gin.HandlerFunc {
 				return
 			}
 		} else {
-			ginresp.InternalError(c, "上下文不存在用户", nil, nil)
+			ginresp.InternalError(c, "请登录后访问", nil, nil)
 		}
 	}
 }

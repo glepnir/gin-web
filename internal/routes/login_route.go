@@ -17,5 +17,6 @@ func LoginRoute(r *gin.RouterGroup) {
 	userRepo := imprepository.NewUserRepository(conn.Get())
 	loginServ := impservice.NewLoginServ(userRepo)
 	loginHandler := handlers.NewLoginHandler(loginServ)
-	r.POST("/login", loginHandler.Login)
+	r.GET("", loginHandler.Login)
+	r.POST("", loginHandler.Login)
 }

@@ -6,6 +6,7 @@ package handlers
 
 import (
 	"errors"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -26,6 +27,10 @@ func NewLoginHandler(l services.LoginServices) *LoginHandler {
 
 func (l *LoginHandler) Login(c *gin.Context) {
 	var login schema.LoginSchema
+	if c.Request.Method == http.MethodGet {
+		c.HTML(http.StatusOK, "login.html", nil)
+		return
+	}
 	err := c.ShouldBindWith(&login, binding.JSON)
 	if err != nil {
 		ginresp.BadRequest(c, "请求错误", nil, err)
@@ -41,8 +46,17 @@ func (l *LoginHandler) Login(c *gin.Context) {
 		ginresp.NotFound(c, err.Error(), nil, nil)
 		return
 	} else if errors.Is(err, global.WrongPassWord) {
-		ginresp.Ok(c, err.Error(), nil, nil)
+		ginresp.PassWordWrong(c, err.Error(), nil, nil)
 		return
 	}
-	ginresp.Ok(c, "登陆成功", loginresult.AccessToken, nil)
+	c.Set("USERINFO", loginresult)
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name:     "edu-token",
+		Value:    loginresult.AccessToken,
+		MaxAge:   7200,
+		Domain:   "localhost",
+		Secure:   false,
+		HttpOnly: true,
+	})
+	ginresp.Ok(c, "登陆成功", loginresult, nil)
 }
