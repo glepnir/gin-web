@@ -5,7 +5,6 @@
 package middlewares
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -22,7 +21,6 @@ func CheckPermission() gin.HandlerFunc {
 			conn := &storage.DB{}
 			userRepo := imprepository.NewUserRepository(conn.Get())
 			rolename, exist := userRepo.GetUserRoleName(userid)
-			fmt.Println(rolename)
 			if exist {
 				path := c.Request.URL.Path
 				method := c.Request.Method

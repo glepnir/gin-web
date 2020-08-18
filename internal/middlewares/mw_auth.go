@@ -15,17 +15,20 @@ func CheckAuth() gin.HandlerFunc {
 		token, err := c.Cookie("edu-token")
 		if err != nil {
 			ginresp.UnAuthorized(c, "无权访问请登录后访问", nil, nil)
+			c.Redirect(302, "/")
 			c.Abort()
 			return
 		}
 		if token == "" {
 			ginresp.UnAuthorized(c, "无权访问请登录后访问", nil, nil)
+			c.Redirect(302, "/")
 			c.Abort()
 			return
 		}
 		auth := global.NewAuth()
 		userid, err := auth.ParseUserID(token)
 		if err != nil {
+			c.Redirect(302, "/")
 			ginresp.UnAuthorized(c, "认证失败请重新登陆", nil, err)
 			return
 		}
