@@ -22,6 +22,6 @@ func UserRoute(g *gin.RouterGroup) {
 		userg.GET("", userHandler.GetUsers)
 		userg.GET(":id", userHandler.GetUserById)
 		userg.POST("", userHandler.Create)
-		userg.PUT(":id", userHandler.Update)
+		userg.POST(":id", userHandler.Update)
 	}
 }

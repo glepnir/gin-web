@@ -5,6 +5,9 @@
 package handlers
 
 import (
+	"fmt"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/glepnir/gin-web/internal/schema"
@@ -49,7 +52,7 @@ func (u *UserHandler) Update(c *gin.Context) {
 	param := schema.UserID{}
 	_ = c.ShouldBindUri(&param)
 	_ = c.ShouldBindBodyWith(&user, binding.JSON)
-
+	fmt.Println(user)
 	err := validator.Validate(&user)
 	if err != nil {
 		ginresp.BadRequest(c, err.Error(), nil, nil)
@@ -72,9 +75,16 @@ func (u *UserHandler) GetUsers(c *gin.Context) {
 func (u *UserHandler) GetUserById(c *gin.Context) {
 	var param schema.UserID
 	_ = c.ShouldBindUri(&param)
-	user, ok := u.userService.GetUserByID(param.ID)
+	currentuser, ok := u.userService.GetUserByID(param.ID)
 	if ok {
-		ginresp.Ok(c, "", user, nil)
+		c.HTML(http.StatusOK, "admin-edit.html", gin.H{
+			"current_userid":             param.ID,
+			"current_username":           currentuser.UserName,
+			"current_userphone":          currentuser.Phone,
+			"current_usercompany":        currentuser.CompanyName,
+			"current_usercompanyaddress": currentuser.CompanyAddress,
+			"current_expiretime":         currentuser.ExpireTime.String(),
+		})
 	} else {
 		ginresp.NotFound(c, "未查到该用户", nil, nil)
 	}

@@ -50,14 +50,11 @@ func (u *userServ) CreateUser(userschema schema.CreateUserSchema) (error, bool) 
 }
 
 func (u *userServ) UpdateUser(id string, updateuser schema.UserSchema) error {
-	localtime, _ := time.ParseInLocation("2006-01-02 15:04:05", updateuser.ExpireTime, time.Local)
 	user := entity.User{
 		UserName:       updateuser.UserName,
 		Phone:          updateuser.Phone,
 		CompanyName:    updateuser.CompanyName,
 		CompanyAddress: updateuser.CompanyAddress,
-		Status:         updateuser.Status,
-		ExpireTime:     localtime,
 	}
 	err := u.userRepository.UpdateUser(id, user)
 	if err != nil {
