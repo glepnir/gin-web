@@ -69,7 +69,7 @@ func (u *UserHandler) Update(c *gin.Context) {
 
 func (u *UserHandler) GetUsers(c *gin.Context) {
 	users := u.userService.GetUsers()
-	ginresp.Ok(c, "", users, nil)
+	c.HTML(http.StatusOK, "admin-list.html", users)
 }
 
 func (u *UserHandler) GetUserById(c *gin.Context) {
