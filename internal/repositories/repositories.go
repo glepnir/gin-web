@@ -15,7 +15,7 @@ type UserWriter interface {
 
 type UserReader interface {
 	UserExist(name string) (entity.User, bool)
-	GetUsers() []entity.User
+	GetUsers(currentpage int) (map[string]interface{}, error)
 	GetUserByID(id string) (entity.User, bool)
 	GetUserByPhone(phone string) (entity.User, bool)
 	GetUserRoleName(userid string) (string, bool)

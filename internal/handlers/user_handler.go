@@ -7,6 +7,7 @@ package handlers
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -68,8 +69,18 @@ func (u *UserHandler) Update(c *gin.Context) {
 }
 
 func (u *UserHandler) GetUsers(c *gin.Context) {
-	users := u.userService.GetUsers()
-	c.HTML(http.StatusOK, "admin-list.html", users)
+	currentPage, _ := strconv.Atoi(c.Query("page_index"))
+	if currentPage == 0 {
+		currentPage = 1
+	}
+	models, err := u.userService.GetUsers(currentPage)
+	fmt.Println(models)
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "admin-list.html", gin.H{
+			"message": "服务器异常",
+		})
+	}
+	ginresp.Ok(c, "获取数据成功", models, nil)
 }
 
 func (u *UserHandler) GetUserById(c *gin.Context) {

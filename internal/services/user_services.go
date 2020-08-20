@@ -15,7 +15,7 @@ type UserServiceWriter interface {
 }
 
 type UserServiceReader interface {
-	GetUsers() []entity.User
+	GetUsers(currentpage int) (map[string]interface{}, error)
 	GetUserByID(id string) (entity.User, bool)
 	GetUserByPhone(phone string) (entity.User, bool)
 }

@@ -7,6 +7,7 @@ package imprepository
 import (
 	"github.com/glepnir/gin-web/internal/repositories"
 	"github.com/glepnir/gin-web/internal/storage/entity"
+	"github.com/glepnir/gin-web/pkg/pagination"
 	"github.com/jinzhu/gorm"
 )
 
@@ -53,11 +54,9 @@ func (r *userRepo) UpdateUser(id string, update entity.User) error {
 	return tx.Commit().Error
 }
 
-func (r *userRepo) GetUsers() []entity.User {
+func (r *userRepo) GetUsers(currentpage int) (map[string]interface{}, error) {
 	var users []entity.User
-	r.conn.Select(
-		"id,username,phone,status,companyname,companyaddress,expiretime,created_at,updated_at").Where("deleted_at is null").First(&users)
-	return users
+	return pagination.Paginate(r.conn.Model(&entity.User{}).Where("deleted_at is null"), currentpage, &users)
 }
 
 func (r *userRepo) GetUserByID(id string) (entity.User, bool) {

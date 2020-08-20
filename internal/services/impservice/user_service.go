@@ -63,9 +63,13 @@ func (u *userServ) UpdateUser(id string, updateuser schema.UserSchema) error {
 	return nil
 }
 
-func (u *userServ) GetUsers() []entity.User {
-	users := u.userRepository.GetUsers()
-	return users
+func (u *userServ) GetUsers(currentpage int) (map[string]interface{}, error) {
+	models, err := u.userRepository.GetUsers(currentpage)
+	if err != nil {
+		return nil, err
+	}
+
+	return models, nil
 }
 
 func (u *userServ) GetUserByID(id string) (entity.User, bool) {
