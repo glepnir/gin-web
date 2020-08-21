@@ -74,13 +74,10 @@ func (u *UserHandler) GetUsers(c *gin.Context) {
 		currentPage = 1
 	}
 	models, err := u.userService.GetUsers(currentPage)
-	fmt.Println(models)
 	if err != nil {
-		c.HTML(http.StatusInternalServerError, "admin-list.html", gin.H{
-			"message": "服务器异常",
-		})
+		ginresp.InternalError(c, "服务器异常", nil, err)
 	}
-	ginresp.Ok(c, "获取数据成功", models, nil)
+	ginresp.OkWithCount(c, "获取数据成功", models["list"], models["totalItems"].(int), nil)
 }
 
 func (u *UserHandler) GetUserById(c *gin.Context) {

@@ -36,8 +36,8 @@
         <div class="layui-form-item layui-form-text">
           <label class="layui-form-label">机构地址:</label>
           <div class="layui-input-block">
-            <input type="text" name="companyaddress" required lay-verify="required" value={{.current_usercompanyaddress}}
-              autocomplete="off" class="layui-input">
+            <input type="text" name="companyaddress" required lay-verify="required"
+              value={{.current_usercompanyaddress}} autocomplete="off" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item">
@@ -49,37 +49,39 @@
     </div>
   </div>
 </body>
-    <script>
-            layui.use('form', function(){
-              var form = layui.form;
-              form.on('submit(updateuser)', function(data){
-              console.log(JSON.stringify(data.field))
-                $.ajax({
-                  url : 'http://localhost:8080/users/{{.current_userid}}',
-                    type : 'POST',
-                    data : JSON.stringify(data.field),
-                    success : function(result) {
-                        if (result.code == "1") {
-                            layer.msg(result.message, {
-                              icon: 6,
-                              time: 1000,
-                              end : function() {
-                              xadmin.close();
-                              }
-                            });
-                        } else if (result.code == "0") {
-                            layer.msg(result.message,{
-                              icon:5,
-                              time: 1000,
-                            })
-                        }
-                    },
-                    error : function() {
-                        layer.msg('系统错误');
-                    }
-                });
-                return false;
-              });
+<script>
+  layui.use('form', function () {
+    var form = layui.form;
+    form.on('submit(updateuser)', function (data) {
+      console.log(JSON.stringify(data.field))
+      $.ajax({
+        url: 'http://localhost:8080/users/{{.current_userid}}',
+        type: 'POST',
+        data: JSON.stringify(data.field),
+        success: function (result) {
+          if (result.code == "0") {
+            layer.msg(result.message, {
+              icon: 6,
+              time: 1000,
+              end: function () {
+                xadmin.close();
+                xadmin.father_reload();
+              }
             });
-    </script>
+          } else if (result.code == "-1") {
+            layer.msg(result.message, {
+              icon: 5,
+              time: 1000,
+            })
+          }
+        },
+        error: function () {
+          layer.msg('系统错误');
+        }
+      });
+      return false;
+    });
+  });
+</script>
+
 </html>

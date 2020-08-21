@@ -10,7 +10,7 @@ body{
 }
 
 .left-nav a{
-    color:#686a76 !important;
+    color:#cbccd1 !important;
 }
 .left-nav a.active{
     background: linear-gradient(to left, #7c8ce4, #2196f3) !important;
