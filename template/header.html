@@ -1,5 +1,6 @@
 {{define "header"}}
 {{template "heade" }}
+
 <body class="index">
   <!-- 顶部开始 -->
   <div class="container">
@@ -15,7 +16,7 @@
         <dl class="layui-nav-child">
           <!-- 二级菜单 -->
           <dd>
-          <a onclick="xadmin.open('个人信息','/users/{{.userid}}',800,600)">个人信息</a>
+            <a onclick="xadmin.open('个人信息','/person/{{.userid}}',800,600)">个人信息</a>
           </dd>
           <dd>
             <a onclick="xadmin.open('修改密码','http://www.baidu.com')">修改密码</a>
@@ -30,4 +31,4 @@
       </li>
     </ul>
   </div>
-{{ end }}
+  {{ end }}

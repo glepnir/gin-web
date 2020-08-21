@@ -92,6 +92,7 @@ func (u *UserHandler) GetUserById(c *gin.Context) {
 			"current_usercompany":        currentuser.CompanyName,
 			"current_usercompanyaddress": currentuser.CompanyAddress,
 			"current_expiretime":         currentuser.ExpireTime.String(),
+			"current_userstatus":         currentuser.Status,
 		})
 	} else {
 		ginresp.NotFound(c, "未查到该用户", nil, nil)
