@@ -83,3 +83,7 @@ func (r *userRepo) GetUserRoleName(userid string) (string, bool) {
 	}
 	return user.RoleName, true
 }
+
+func (r *userRepo) DeleteUser(userid string) error {
+	return r.conn.Where("id = ? ", userid).Delete(&entity.User{}).Error
+}

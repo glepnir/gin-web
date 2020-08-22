@@ -11,6 +11,7 @@ import (
 type UserWriter interface {
 	CreateUser(user entity.User) (entity.User, error)
 	UpdateUser(id string, update entity.User) error
+	DeleteUser(id string) error
 }
 
 type UserReader interface {

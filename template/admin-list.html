@@ -50,7 +50,7 @@
 <script type="text/html" id="toolbarleft">
   <div class = "layui-btn-container" >
     <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-    <button class="layui-btn" onclick="xadmin.open('添加用户','/rendercreateuser',600,400)"><i class="layui-icon"></i>添加</button>
+    <button class="layui-btn" onclick="xadmin.open('添加用户','/rendercreateuser',800,600)"><i class="layui-icon"></i>添加</button>
   </div >
 </script>
 
@@ -90,9 +90,32 @@
             layer.msg('查看操作');
           } else if (layEvent === 'del') {
             layer.confirm('真的删除行么', function (index) {
-              obj.del(); //删除对应行（tr）的DOM结构
-              layer.close(index);
-              //向服务端发送删除指令
+              $.ajax({
+                url: '/users/' + data.ID,
+                type: 'delete',
+                data: JSON.stringify(data.field),
+                success: function (result) {
+                  if (result.code == "0") {
+                    layer.msg(result.message, {
+                      icon: 6,
+                      time: 1000,
+                      end: function () {
+                        obj.del(); //删除对应行（tr）的DOM结构
+                        layer.close(index);
+                      }
+                    });
+                  } else if (result.code == "-1") {
+                    layer.msg(result.message, {
+                      icon: 5,
+                      time: 1000,
+                    })
+                  }
+                },
+                error: function () {
+                  layer.msg('系统错误');
+                }
+              });
+              return false;
             });
           } else if (layEvent === 'edit') {
             console.log(data)

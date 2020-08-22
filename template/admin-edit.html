@@ -63,7 +63,7 @@
     form.on('submit(updateuser)', function (data) {
       console.log(JSON.stringify(data.field))
       $.ajax({
-        url: 'http://localhost:8080/users/{{.current_userid}}',
+        url: '/users/{{.current_userid}}',
         type: 'POST',
         data: JSON.stringify(data.field),
         success: function (result) {

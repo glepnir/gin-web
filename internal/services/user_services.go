@@ -12,6 +12,7 @@ import (
 type UserServiceWriter interface {
 	CreateUser(user schema.CreateUserSchema) (error, bool)
 	UpdateUser(id string, user schema.UserSchema) error
+	DeleteUser(id string) error
 }
 
 type UserServiceReader interface {

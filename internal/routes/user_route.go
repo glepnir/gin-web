@@ -23,5 +23,6 @@ func UserRoute(g *gin.RouterGroup) {
 		userg.GET(":id", userHandler.GetUserById)
 		userg.POST("", userHandler.Create)
 		userg.POST(":id", userHandler.Update)
+		userg.DELETE(":id", userHandler.DeleteUser)
 	}
 }

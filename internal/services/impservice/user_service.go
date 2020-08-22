@@ -28,14 +28,14 @@ func (u *userServ) CreateUser(userschema schema.CreateUserSchema) (error, bool) 
 	_, exist := u.userRepository.UserExist(userschema.Phone)
 	if exist {
 		userschema.PassWord = hash.HashAndSalt([]byte(userschema.PassWord))
-		localtime, _ := time.ParseInLocation("2006-01-02 15:04:05", userschema.ExpireTime, time.Local)
+		localtime, _ := time.Parse("2006-01-02", userschema.ExpireTime)
 		user := entity.User{
 			UserName:       userschema.UserName,
 			PassWord:       userschema.PassWord,
 			Phone:          userschema.Phone,
 			CompanyName:    userschema.CompanyName,
 			CompanyAddress: userschema.CompanyAddress,
-			Status:         userschema.Status,
+			Status:         1,
 			ExpireTime:     localtime,
 			RoleName:       userschema.RoleName,
 		}
@@ -87,4 +87,8 @@ func (u *userServ) GetUserByPhone(phone string) (entity.User, bool) {
 	} else {
 		return user, false
 	}
+}
+
+func (u *userServ) DeleteUser(id string) error {
+	return u.userRepository.DeleteUser(id)
 }

@@ -98,3 +98,14 @@ func (u *UserHandler) GetUserById(c *gin.Context) {
 		ginresp.NotFound(c, "未查到该用户", nil, nil)
 	}
 }
+
+func (u *UserHandler) DeleteUser(c *gin.Context) {
+	var param schema.UserID
+	_ = c.ShouldBindUri(&param)
+	err := u.userService.DeleteUser(param.ID)
+	if err != nil {
+		ginresp.InternalError(c, "删除失败服务器异常", nil, err)
+		return
+	}
+	ginresp.Ok(c, "删除成功", nil, nil)
+}
