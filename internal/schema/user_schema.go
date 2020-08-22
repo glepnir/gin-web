@@ -22,6 +22,7 @@ type UserSchema struct {
 	UserID
 	UserName       string `json:"username" validate:"required" label:"用户姓名"`
 	Phone          string `json:"phone" validate:"required,mobile" label:"联系电话"`
+	Status         string `json:"status" validate:"required,max=2,min=1" label:"状态"`
 	CompanyName    string `json:"companyname" validate:"required" label:"公司名称"`
 	CompanyAddress string `json:"companyaddress" validate:"required" label:"公司地址"`
 }

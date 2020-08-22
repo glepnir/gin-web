@@ -36,9 +36,12 @@
 
         <div class="layui-form-item">
           <label class="layui-form-label">状态:</label>
-          <div class="layui-input-block">
-            <input type="text" name="expiretime" required lay-verify="required" value={{.current_userstatus}}
-              autocomplete="off" class="layui-input">
+          <div class="layui-input-inline">
+            {{if eq .current_userstatus 1}}
+            <input type="checkbox" name="status" lay-text="开启|停用" checked lay-skin="switch">
+            {{else}}
+            <input type="checkbox" name="status" lay-text="开启|停用" lay-skin="switch">
+            {{end}}
           </div>
         </div>
         <div class="layui-form-item layui-form-text">
@@ -61,7 +64,12 @@
   layui.use('form', function () {
     var form = layui.form;
     form.on('submit(updateuser)', function (data) {
-      console.log(JSON.stringify(data.field))
+      if (data.field.status == "on") {
+        data.field.status = "1"
+      } else {
+        data.field.status = "2"
+      }
+      console.log(data.field.status)
       $.ajax({
         url: '/users/{{.current_userid}}',
         type: 'POST',

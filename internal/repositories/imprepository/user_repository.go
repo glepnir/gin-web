@@ -5,6 +5,8 @@
 package imprepository
 
 import (
+	"fmt"
+
 	"github.com/glepnir/gin-web/internal/repositories"
 	"github.com/glepnir/gin-web/internal/storage/entity"
 	"github.com/glepnir/gin-web/pkg/pagination"
@@ -51,6 +53,7 @@ func (r *userRepo) UpdateUser(id string, update entity.User) error {
 		tx.Rollback()
 		return err
 	}
+	fmt.Println(update.Status)
 	return tx.Commit().Error
 }
 

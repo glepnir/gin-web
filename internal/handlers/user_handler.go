@@ -54,6 +54,7 @@ func (u *UserHandler) Update(c *gin.Context) {
 	_ = c.ShouldBindUri(&param)
 	_ = c.ShouldBindBodyWith(&user, binding.JSON)
 	fmt.Println(user)
+
 	err := validator.Validate(&user)
 	if err != nil {
 		ginresp.BadRequest(c, err.Error(), nil, nil)

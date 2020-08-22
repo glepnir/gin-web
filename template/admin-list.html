@@ -19,12 +19,6 @@
           <div class="layui-card-body ">
             <form class="layui-form layui-col-space5">
               <div class="layui-inline layui-show-xs-block">
-                <input class="layui-input" autocomplete="off" placeholder="开始日" name="start" id="start">
-              </div>
-              <div class="layui-inline layui-show-xs-block">
-                <input class="layui-input" autocomplete="off" placeholder="截止日" name="end" id="end">
-              </div>
-              <div class="layui-inline layui-show-xs-block">
                 <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
               </div>
               <div class="layui-inline layui-show-xs-block">
@@ -49,7 +43,6 @@
 
 <script type="text/html" id="toolbarleft">
   <div class = "layui-btn-container" >
-    <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
     <button class="layui-btn" onclick="xadmin.open('添加用户','/rendercreateuser',800,600)"><i class="layui-icon"></i>添加</button>
   </div >
 </script>
@@ -68,12 +61,12 @@
         , {field: 'Phone', width: 120, title: '联系电话'}
         , {field: 'CompanyName', width: 200, title: '机构名称'}
         , {field: 'CompanyAddress', title: '机构地址'}
-        , {field: 'ExpireTime', width: 150, title: '到期时间'}
+        , {field: 'ExpireTime', width: 200, title: '到期时间'}
         , {
           field: 'Status', width: 100, title: '状态', templet: function (d) {
             if (d.Status == 1) {
               return '<span class="layui-badge-dot layui-bg-blue"></span><span style="color:#1E9FFF"> 正常</span>'
-            } else if (d.Status == 2) {
+            } else {
               return '<span class="layui-badge-dot layui-bg-red"></span><span style="color:#FF5722"> 停用</span>'
             }
           }
@@ -118,7 +111,6 @@
               return false;
             });
           } else if (layEvent === 'edit') {
-            console.log(data)
             xadmin.open('用户信息', '/users/' + data.ID, 800, 600)
           }
         });

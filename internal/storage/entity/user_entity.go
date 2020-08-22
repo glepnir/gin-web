@@ -12,7 +12,7 @@ type User struct {
 	UserName       string    `gorm:"column:username;size:64;index;default:'';not null;" `
 	PassWord       string    `gorm:"column:password;size:60;default:'';not null;" json:"-"`
 	Phone          string    `gorm:"column:phone;size:20;index;default:'';not null;"`
-	Status         int       `gorm:"column:status;index;default:0;not null;"`
+	Status         int       `gorm:"column:status;index;default:1;not null;"`
 	CompanyName    string    `gorm:"column:companyname;index;default:'';" `
 	CompanyAddress string    `gorm:"column:companyaddress;default:'';size:255"`
 	ExpireTime     time.Time `gorm:"column:expiretime;index"`

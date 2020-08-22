@@ -5,6 +5,7 @@
 package impservice
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/glepnir/gin-web/internal/repositories"
@@ -50,9 +51,11 @@ func (u *userServ) CreateUser(userschema schema.CreateUserSchema) (error, bool) 
 }
 
 func (u *userServ) UpdateUser(id string, updateuser schema.UserSchema) error {
+	status, _ := strconv.Atoi(updateuser.Status)
 	user := entity.User{
 		UserName:       updateuser.UserName,
 		Phone:          updateuser.Phone,
+		Status:         status,
 		CompanyName:    updateuser.CompanyName,
 		CompanyAddress: updateuser.CompanyAddress,
 	}
