@@ -54,7 +54,7 @@
     table.render({
       elem: '#usertable'
       , url: '/users'
-      , height: 700
+      , height: 'full-200'
       , toolbar: '#toolbarleft'
       , cols: [[
         {field: 'UserName', width: 120, title: '用户名'}
@@ -80,7 +80,7 @@
           var data = obj.data //获得当前行数据
             , layEvent = obj.event; //获得 lay-event 对应的值
           if (layEvent === 'detail') {
-            layer.msg('查看操作');
+            xadmin.open('用户信息', '/users/' + data.ID, 800, 600)
           } else if (layEvent === 'del') {
             layer.confirm('真的删除行么', function (index) {
               $.ajax({
@@ -104,8 +104,11 @@
                     })
                   }
                 },
-                error: function () {
-                  layer.msg('系统错误');
+                error: function (result) {
+                  layer.msg(result.responseJSON.message, {
+                    icon: 5,
+                    time: 1000,
+                  });
                 }
               });
               return false;

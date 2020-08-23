@@ -32,6 +32,7 @@ func (l *loginServ) Login(login schema.LoginSchema) (schema.LoginResultSchema, e
 				UserName:    user.UserName,
 				Phone:       user.Phone,
 				CompanyName: user.CompanyName,
+				ExpireTime:  user.ExpireTime,
 			}, nil
 		} else {
 			return schema.LoginResultSchema{}, global.WrongPassWord

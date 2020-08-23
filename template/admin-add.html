@@ -94,6 +94,7 @@
       laydate.render({
         elem: '#expiretime' //指定元素
       });
+
       $ = layui.jquery;
       var form = layui.form,
         layer = layui.layer;
@@ -129,8 +130,11 @@
               })
             }
           },
-          error: function () {
-            layer.msg('系统错误');
+          error: function (result) {
+            layer.msg(result.responseJSON.message, {
+              icon: 5,
+              time: 1000,
+            });
           }
         });
         return false;

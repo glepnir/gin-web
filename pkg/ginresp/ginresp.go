@@ -55,6 +55,14 @@ func Ok(c *gin.Context, message string, data interface{}, err error) {
 	})
 }
 
+func OkWithFailed(c *gin.Context, message string, data interface{}, err error) {
+	c.JSON(http.StatusOK, gin.H{
+		"code":    "-1",
+		"message": message,
+		"data":    data,
+		"error":   err,
+	})
+}
 func OkWithCount(c *gin.Context, message string, data interface{}, count int, err error) {
 	c.JSON(http.StatusOK, gin.H{
 		"code":    "0",

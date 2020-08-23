@@ -29,8 +29,8 @@
         <div class="layui-form-item">
           <label class="layui-form-label">到期时间:</label>
           <div class="layui-input-block">
-            <input type="text" id="expiretime" name="expiretime" required lay-verify="required"
-              value={{.current_expiretime}} autocomplete="off" class="layui-input">
+            <input type="text" name="expiretime" required lay-verify="required" value={{.current_expiretime}}
+              autocomplete="off" class="layui-input" disabled>
           </div>
         </div>
 
@@ -60,54 +60,5 @@
     </div>
   </div>
 </body>
-<script>
-  layui.use(['form', 'laydate'], function () {
-    var laydate = layui.laydate;
-
-    //执行一个laydate实例
-    laydate.render({
-      elem: '#expiretime' //指定元素
-    });
-
-    var form = layui.form;
-    form.on('submit(updateuser)', function (data) {
-      if (data.field.status == "on") {
-        data.field.status = "1"
-      } else {
-        data.field.status = "2"
-      }
-      console.log(data.field.status)
-      $.ajax({
-        url: '/users/{{.current_userid}}',
-        type: 'POST',
-        data: JSON.stringify(data.field),
-        success: function (result) {
-          if (result.code == "0") {
-            layer.msg(result.message, {
-              icon: 6,
-              time: 1000,
-              end: function () {
-                xadmin.close();
-                xadmin.father_reload();
-              }
-            });
-          } else if (result.code == "-1") {
-            layer.msg(result.message, {
-              icon: 5,
-              time: 1000,
-            })
-          }
-        },
-        error: function (result) {
-          layer.msg(result.responseJSON.message, {
-            icon: 5,
-            time: 1000,
-          });
-        }
-      });
-      return false;
-    });
-  });
-</script>
 
 </html>

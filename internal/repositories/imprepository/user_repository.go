@@ -9,7 +9,6 @@ import (
 
 	"github.com/glepnir/gin-web/internal/repositories"
 	"github.com/glepnir/gin-web/internal/storage/entity"
-	"github.com/glepnir/gin-web/pkg/pagination"
 	"github.com/jinzhu/gorm"
 )
 
@@ -53,13 +52,16 @@ func (r *userRepo) UpdateUser(id string, update entity.User) error {
 		tx.Rollback()
 		return err
 	}
-	fmt.Println(update.Status)
 	return tx.Commit().Error
 }
 
-func (r *userRepo) GetUsers(currentpage int) (map[string]interface{}, error) {
+func (r *userRepo) GetUsers(page, limit int) ([]entity.User, int, error) {
 	var users []entity.User
-	return pagination.Paginate(r.conn.Model(&entity.User{}).Where("deleted_at is null"), currentpage, &users)
+	var count int
+	r.conn.Model(&entity.User{}).Where("deleted_at is null").Count(&count)
+	err := r.conn.Model(&entity.User{}).Where("deleted_at is null").Limit(limit).Offset((page - 1) * limit).Find(&users).Error
+	fmt.Println(err)
+	return users, count, err
 }
 
 func (r *userRepo) GetUserByID(id string) (entity.User, bool) {

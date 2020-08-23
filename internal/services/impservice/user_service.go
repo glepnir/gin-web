@@ -66,13 +66,23 @@ func (u *userServ) UpdateUser(id string, updateuser schema.UserSchema) error {
 	return nil
 }
 
-func (u *userServ) GetUsers(currentpage int) (map[string]interface{}, error) {
-	models, err := u.userRepository.GetUsers(currentpage)
-	if err != nil {
-		return nil, err
+func (u *userServ) GetUsers(currentpage, limit int) ([]schema.GetUsersSchema, int, error) {
+	users, count, err := u.userRepository.GetUsers(currentpage, limit)
+	usersschema := make([]schema.GetUsersSchema, len(users))
+	if err == nil {
+		for index, user := range users {
+			ts := user.ExpireTime.Format("2006-01-02")
+			usersschema[index] = schema.GetUsersSchema{
+				ID:             user.ID.String(),
+				UserName:       user.UserName,
+				Status:         user.Status,
+				ExpireTime:     ts,
+				CompanyName:    user.CompanyName,
+				CompanyAddress: user.CompanyAddress,
+			}
+		}
 	}
-
-	return models, nil
+	return usersschema, count, err
 }
 
 func (u *userServ) GetUserByID(id string) (entity.User, bool) {

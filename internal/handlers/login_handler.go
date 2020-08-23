@@ -7,6 +7,7 @@ package handlers
 import (
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -47,6 +48,10 @@ func (l *LoginHandler) Login(c *gin.Context) {
 		return
 	} else if errors.Is(err, global.WrongPassWord) {
 		ginresp.PassWordWrong(c, err.Error(), nil, nil)
+		return
+	}
+	if time.Now().After(loginresult.ExpireTime) {
+		ginresp.OkWithFailed(c, "账号已过期", nil, nil)
 		return
 	}
 	c.Set("USERINFO", loginresult)

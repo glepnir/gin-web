@@ -26,3 +26,13 @@ type UserSchema struct {
 	CompanyName    string `json:"companyname" validate:"required" label:"公司名称"`
 	CompanyAddress string `json:"companyaddress" validate:"required" label:"公司地址"`
 }
+
+type GetUsersSchema struct {
+	ID             string
+	UserName       string
+	Phone          string
+	Status         int
+	ExpireTime     string
+	CompanyName    string
+	CompanyAddress string
+}

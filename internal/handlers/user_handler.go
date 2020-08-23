@@ -70,21 +70,21 @@ func (u *UserHandler) Update(c *gin.Context) {
 }
 
 func (u *UserHandler) GetUsers(c *gin.Context) {
-	currentPage, _ := strconv.Atoi(c.Query("page_index"))
-	if currentPage == 0 {
-		currentPage = 1
-	}
-	models, err := u.userService.GetUsers(currentPage)
+	currentPage, _ := strconv.Atoi(c.Query("page"))
+	limit, _ := strconv.Atoi(c.Query("limit"))
+	users, count, err := u.userService.GetUsers(currentPage, limit)
 	if err != nil {
-		ginresp.InternalError(c, "服务器异常", nil, err)
+		ginresp.InternalError(c, "获取数据失败", nil, err)
+		return
 	}
-	ginresp.OkWithCount(c, "获取数据成功", models["list"], models["totalItems"].(int), nil)
+	ginresp.OkWithCount(c, "获取数据成功", users, count, nil)
 }
 
 func (u *UserHandler) GetUserById(c *gin.Context) {
 	var param schema.UserID
 	_ = c.ShouldBindUri(&param)
 	currentuser, ok := u.userService.GetUserByID(param.ID)
+	ts := currentuser.ExpireTime.Format("2006-01-02")
 	if ok {
 		c.HTML(http.StatusOK, "admin-edit.html", gin.H{
 			"current_userid":             param.ID,
@@ -92,7 +92,7 @@ func (u *UserHandler) GetUserById(c *gin.Context) {
 			"current_userphone":          currentuser.Phone,
 			"current_usercompany":        currentuser.CompanyName,
 			"current_usercompanyaddress": currentuser.CompanyAddress,
-			"current_expiretime":         currentuser.ExpireTime.String(),
+			"current_expiretime":         ts,
 			"current_userstatus":         currentuser.Status,
 		})
 	} else {

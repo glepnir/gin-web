@@ -39,6 +39,8 @@
         $.ajax({
           url: '/',
           type: 'post',
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
           data: JSON.stringify(data.field),
           success: function (result) {
             if (result.code == "0") {
@@ -46,7 +48,6 @@
                 icon: 6,
                 time: 1000,
                 end: function () {
-                  localStorage.setItem("edu-token", result.data.access_token);
                   location.href = "index"
                 }
               });
@@ -60,8 +61,11 @@
               })
             }
           },
-          error: function () {
-            layer.msg('系统错误');
+          error: function (result) {
+            layer.msg(result.responseJSON.message, {
+              icon: 5,
+              time: 1000,
+            });
           }
         });
         return false;
