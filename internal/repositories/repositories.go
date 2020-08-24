@@ -18,7 +18,7 @@ type UserReader interface {
 	UserExist(name string) (entity.User, bool)
 	GetUsers(currentpage, limit int) ([]entity.User, int, error)
 	GetUserByID(id string) (entity.User, bool)
-	GetUserByPhone(phone string) (entity.User, bool)
+	GetUserByPhone(phone string) (entity.User, int, bool)
 	GetUserRoleName(userid string) (string, bool)
 }
 

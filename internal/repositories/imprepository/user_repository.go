@@ -71,13 +71,15 @@ func (r *userRepo) GetUserByID(id string) (entity.User, bool) {
 	return user, exist
 }
 
-func (r *userRepo) GetUserByPhone(phone string) (entity.User, bool) {
+func (r *userRepo) GetUserByPhone(phone string) (entity.User, int, bool) {
 	var user entity.User
+	var count int
+	r.conn.Where("phone = ?", phone).First(&user).Count(&count)
 	exist := r.conn.Where("phone = ?", phone).First(&user).RecordNotFound()
 	if exist {
-		return user, false
+		return user, count, false
 	}
-	return user, true
+	return user, count, true
 }
 
 func (r *userRepo) GetUserRoleName(userid string) (string, bool) {

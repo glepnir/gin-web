@@ -5,6 +5,8 @@
 package routes
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/glepnir/gin-web/internal/handlers"
 	"github.com/glepnir/gin-web/internal/repositories/imprepository"
@@ -13,11 +15,18 @@ import (
 )
 
 func UserRoute(g *gin.RouterGroup) {
-	userg := g.Group("/users")
 	conn := &storage.DB{}
 	userRepository := imprepository.NewUserRepository(conn.Get())
 	userService := impservice.NewUserService(userRepository)
 	userHandler := handlers.NewUserHandler(userService)
+	g.GET("renderusers", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "admin-list.html", nil)
+	})
+	g.GET("rendercreateuser", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "admin-add.html", nil)
+	})
+
+	userg := g.Group("/users")
 	{
 		userg.GET("", userHandler.GetUsers)
 		userg.GET(":id", userHandler.GetUserById)

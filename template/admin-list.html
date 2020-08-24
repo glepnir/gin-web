@@ -19,10 +19,13 @@
           <div class="layui-card-body ">
             <form class="layui-form layui-col-space5">
               <div class="layui-inline layui-show-xs-block">
-                <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                <input id="searchphone" type="text" name="phone" placeholder="请输入联系电话" autocomplete="off"
+                  class="layui-input">
               </div>
               <div class="layui-inline layui-show-xs-block">
-                <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                <button id="search" class="layui-btn" lay-submit="" lay-filter="search"><i
+                    class="layui-icon">&#xe615;</i></button>
+                </button>
               </div>
             </form>
           </div>
@@ -49,12 +52,14 @@
 
 
 <script>
-  layui.use('table', function () {
+  layui.use(['table', 'form'], function () {
     var table = layui.table;
+    var form = layui.form
     table.render({
       elem: '#usertable'
       , url: '/users'
       , toolbar: '#toolbarleft'
+      , smartReloadModel: true
       , cols: [[
         {field: 'UserName', width: 120, title: '用户名'}
         , {field: 'Phone', width: 120, title: '联系电话'}
@@ -118,6 +123,23 @@
         });
       }
     });
+    //监听提交 lay-filter="search"
+    form.on('submit(search)', function (data) {
+      var phone = $('#searchphone');
+      console.log(phone.val())
+      //执行重载
+      table.reload('usertable', {
+        page: {
+          curr: 1 //重新从第 1 页开始
+        }
+        , where: {//这里传参 向后台
+          phone: phone.val()
+        }
+        , method: 'get'
+      });
+      return false;//false：阻止表单跳转 true：表单跳转
+    });
+
   });
 
 </script>

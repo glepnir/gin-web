@@ -21,7 +21,7 @@ func NewLoginServ(u repositories.UserReader) services.LoginServices {
 }
 
 func (l *loginServ) Login(login schema.LoginSchema) (schema.LoginResultSchema, error) {
-	user, exist := l.userReader.GetUserByPhone(login.Phone)
+	user, _, exist := l.userReader.GetUserByPhone(login.Phone)
 	if exist {
 		pass := hash.HashCompare([]byte(user.PassWord), []byte(login.PassWord))
 		if pass {

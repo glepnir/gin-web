@@ -75,6 +75,7 @@ func (u *userServ) GetUsers(currentpage, limit int) ([]schema.GetUsersSchema, in
 			usersschema[index] = schema.GetUsersSchema{
 				ID:             user.ID.String(),
 				UserName:       user.UserName,
+				Phone:          user.Phone,
 				Status:         user.Status,
 				ExpireTime:     ts,
 				CompanyName:    user.CompanyName,
@@ -93,12 +94,19 @@ func (u *userServ) GetUserByID(id string) (entity.User, bool) {
 	return user, true
 }
 
-func (u *userServ) GetUserByPhone(phone string) (entity.User, bool) {
-	user, exist := u.userRepository.GetUserByPhone(phone)
+func (u *userServ) GetUserByPhone(phone string) (schema.GetUsersSchema, int, bool) {
+	var getuser schema.GetUsersSchema
+	user, count, exist := u.userRepository.GetUserByPhone(phone)
 	if exist {
-		return user, true
+		getuser.UserName = user.UserName
+		getuser.ID = user.ID.String()
+		getuser.Phone = user.Phone
+		getuser.CompanyAddress = user.CompanyAddress
+		getuser.CompanyName = user.CompanyName
+		getuser.ExpireTime = user.ExpireTime.Format("2006-01-02")
+		return getuser, count, true
 	} else {
-		return user, false
+		return getuser, count, false
 	}
 }
 

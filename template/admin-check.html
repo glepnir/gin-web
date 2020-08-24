@@ -8,21 +8,21 @@
           <label class="layui-form-label">用户姓名:</label>
           <div class="layui-input-block">
             <input type="text" name="username" required lay-verify="required" value={{.current_username}}
-              autocomplete="off" class="layui-input">
+              autocomplete="off" class="layui-input" disabled>
           </div>
         </div>
         <div class="layui-form-item">
           <label class="layui-form-label">联系电话:</label>
           <div class="layui-input-block">
             <input type="text" name="phone" required lay-verify="required" value={{.current_userphone}}
-              autocomplete="off" class="layui-input">
+              autocomplete="off" class="layui-input" disabled>
           </div>
         </div>
         <div class="layui-form-item">
           <label class="layui-form-label">机构名称:</label>
           <div class="layui-input-block">
             <input type="text" name="companyname" required lay-verify="required" value={{.current_usercompany}}
-              autocomplete="off" class="layui-input">
+              autocomplete="off" class="layui-input" disabled>
           </div>
         </div>
 
@@ -38,9 +38,9 @@
           <label class="layui-form-label">状态:</label>
           <div class="layui-input-inline">
             {{if eq .current_userstatus 1}}
-            <input type="checkbox" name="status" lay-text="开启|停用" checked lay-skin="switch">
+            <input type="checkbox" name="status" lay-text="开启|停用" checked lay-skin="switch" disabled>
             {{else}}
-            <input type="checkbox" name="status" lay-text="开启|停用" lay-skin="switch">
+            <input type="checkbox" name="status" lay-text="开启|停用" lay-skin="switch" disabled>
             {{end}}
           </div>
         </div>
@@ -48,12 +48,7 @@
           <label class="layui-form-label">机构地址:</label>
           <div class="layui-input-block">
             <input type="text" name="companyaddress" required lay-verify="required"
-              value={{.current_usercompanyaddress}} autocomplete="off" class="layui-input">
-          </div>
-        </div>
-        <div class="layui-form-item">
-          <div class="layui-input-block">
-            <button class="layui-btn" lay-submit lay-filter="updateuser">保存</button>
+              value={{.current_usercompanyaddress}} autocomplete="off" class="layui-input" disabled>
           </div>
         </div>
       </form>

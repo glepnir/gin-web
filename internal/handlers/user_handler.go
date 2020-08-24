@@ -72,6 +72,19 @@ func (u *UserHandler) Update(c *gin.Context) {
 func (u *UserHandler) GetUsers(c *gin.Context) {
 	currentPage, _ := strconv.Atoi(c.Query("page"))
 	limit, _ := strconv.Atoi(c.Query("limit"))
+	phone := c.Query("phone")
+	if phone != "" {
+		user, count, exist := u.userService.GetUserByPhone(phone)
+		var users []schema.GetUsersSchema
+		if exist {
+			users := append(users, user)
+			ginresp.OkWithCount(c, "搜索用户成功", users, count, nil)
+			return
+		} else {
+			ginresp.OkWithFailed(c, "用户不存在", nil, nil)
+			return
+		}
+	}
 	users, count, err := u.userService.GetUsers(currentPage, limit)
 	if err != nil {
 		ginresp.InternalError(c, "获取数据失败", nil, err)

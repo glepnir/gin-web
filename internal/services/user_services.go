@@ -18,7 +18,7 @@ type UserServiceWriter interface {
 type UserServiceReader interface {
 	GetUsers(currentpage, limit int) ([]schema.GetUsersSchema, int, error)
 	GetUserByID(id string) (entity.User, bool)
-	GetUserByPhone(phone string) (entity.User, bool)
+	GetUserByPhone(phone string) (schema.GetUsersSchema, int, bool)
 }
 
 type UserServices interface {

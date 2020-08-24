@@ -81,12 +81,6 @@ func configureRouter(r *gin.Engine) {
 	routes.LoginRoute(g)
 	g.Use(middlewares.CheckAuth())
 	g.Use(middlewares.CheckPermission())
-	g.GET("renderusers", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "admin-list.html", nil)
-	})
-	g.GET("rendercreateuser", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "admin-add.html", nil)
-	})
 	routes.UserRoute(g)
 	routes.RoleRoute(g)
 	routes.IndexRoute(g)
