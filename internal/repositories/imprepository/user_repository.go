@@ -5,8 +5,6 @@
 package imprepository
 
 import (
-	"fmt"
-
 	"github.com/glepnir/gin-web/internal/repositories"
 	"github.com/glepnir/gin-web/internal/storage/entity"
 	"github.com/jinzhu/gorm"
@@ -60,7 +58,6 @@ func (r *userRepo) GetUsers(page, limit int) ([]entity.User, int, error) {
 	var count int
 	r.conn.Model(&entity.User{}).Where("deleted_at is null").Count(&count)
 	err := r.conn.Model(&entity.User{}).Where("deleted_at is null").Limit(limit).Offset((page - 1) * limit).Find(&users).Error
-	fmt.Println(err)
 	return users, count, err
 }
 

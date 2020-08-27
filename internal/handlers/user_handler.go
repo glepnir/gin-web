@@ -5,7 +5,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -53,7 +52,6 @@ func (u *UserHandler) Update(c *gin.Context) {
 	param := schema.UserID{}
 	_ = c.ShouldBindUri(&param)
 	_ = c.ShouldBindBodyWith(&user, binding.JSON)
-	fmt.Println(user)
 
 	err := validator.Validate(&user)
 	if err != nil {

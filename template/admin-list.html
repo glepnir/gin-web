@@ -39,14 +39,13 @@
 </body>
 
 <script type="text/html" id="usertablebar">
-  <span class="layui-btn layui-btn-warm layui-btn-xs" lay-event="detail">查看</span>
   <span class="layui-btn layui-btn-xs" lay-event="edit">编辑</span>
   <apan class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</span>
 </script>
 
 <script type="text/html" id="toolbarleft">
   <div class = "layui-btn-container" >
-    <button class="layui-btn" onclick="xadmin.open('添加用户','/rendercreateuser',800,600)"><i class="layui-icon"></i>添加</button>
+    <button class="layui-btn layui-btn-normal" onclick="xadmin.open('添加用户','/rendercreateuser',800,600)"><i class="layui-icon"></i>添加</button>
   </div >
 </script>
 
@@ -75,7 +74,7 @@
             }
           }
         }
-        , {fixed: 'right', title: '操作', width: 203, toolbar: '#usertablebar'}
+        , {fixed: 'right', title: '操作', width: 150, toolbar: '#usertablebar'}
       ]]
       , page: true
       , done: function (res, curr, count) {
@@ -83,9 +82,7 @@
         table.on('tool(usertable)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
           var data = obj.data //获得当前行数据
             , layEvent = obj.event; //获得 lay-event 对应的值
-          if (layEvent === 'detail') {
-            xadmin.open('用户信息', '/users/' + data.ID, 800, 600)
-          } else if (layEvent === 'del') {
+          if (layEvent === 'del') {
             layer.confirm('真的删除行么', function (index) {
               $.ajax({
                 url: '/users/' + data.ID,

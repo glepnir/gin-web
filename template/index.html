@@ -6,8 +6,38 @@
   <ul class="layui-nav layui-nav-tree layui-bg-cyan layui-inline"
     style="width:220px;height:150%;margin-top: -10px;color:white">
     <li class="layui-nav-item">
+      <a onclick="xadmin.add_tab('学员管理','/renderstudents')">
+        <i class="layui-icon layui-icon-user"></i>
+        <cite>学员管理</cite>
+      </a>
+    </li>
+
+    <li class="layui-nav-item">
+      <a onclick="xadmin.add_tab('课程管理','/rendercourse')">
+        <i class="layui-icon layui-icon-template-1"></i>
+        <cite>课程管理</cite>
+      </a>
+    </li>
+
+    <li class="layui-nav-item">
+      <a onclick="xadmin.add_tab('财务管理','/renderfinance')">
+        <i class="layui-icon layui-icon-rmb"></i>
+        <cite>财务管理</cite>
+      </a>
+    </li>
+
+    <li class="layui-nav-item">
+      <a onclick="xadmin.add_tab('机构管理','/rendercompany')">
+        <i class="layui-icon layui-icon-util"></i>
+        <cite>
+          机构管理
+        </cite>
+      </a>
+    </li>
+
+    <li class="layui-nav-item">
       <a href="javascript:;">
-        <i class="iconfont left-nav-li" lay-tips="系统管理">&#xe726;</i>
+        <i class="layui-icon layui-icon-set-sm"></i>
         <cite>系统管理</cite>
       </a>
       <dl class="layui-nav-child">

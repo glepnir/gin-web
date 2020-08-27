@@ -26,3 +26,11 @@ type UserRepository interface {
 	UserWriter
 	UserReader
 }
+
+type StudentWriter interface {
+	CreateStudent(student entity.Student) error
+}
+
+type StudentRepository interface {
+	StudentWriter
+}

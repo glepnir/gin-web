@@ -23,7 +23,7 @@ func NewUserService(u repositories.UserRepository) services.UserServices {
 	return &userServ{userRepository: u}
 }
 
-var _UserServ = (*services.UserServices)(nil)
+var _ services.UserServiceReader = (*userServ)(nil)
 
 func (u *userServ) CreateUser(userschema schema.CreateUserSchema) (error, bool) {
 	_, exist := u.userRepository.UserExist(userschema.Phone)
@@ -101,6 +101,7 @@ func (u *userServ) GetUserByPhone(phone string) (schema.GetUsersSchema, int, boo
 		getuser.UserName = user.UserName
 		getuser.ID = user.ID.String()
 		getuser.Phone = user.Phone
+		getuser.Status = user.Status
 		getuser.CompanyAddress = user.CompanyAddress
 		getuser.CompanyName = user.CompanyName
 		getuser.ExpireTime = user.ExpireTime.Format("2006-01-02")

@@ -74,4 +74,7 @@ func AutoMigrate(conn *gorm.DB, tableprefix string) {
 	if !conn.HasTable("users") {
 		conn.AutoMigrate(&entity.User{})
 	}
+	if !conn.HasTable("students") {
+		conn.AutoMigrate(&entity.Student{})
+	}
 }
